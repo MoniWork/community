@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a Question (Q&A)
+    url: https://github.com/MoniWork/community/discussions/categories/q-a
+    about: Ask the community for help — check here before opening an issue
+  - name: Request a Feature (Ideas)
+    url: https://github.com/MoniWork/community/discussions/categories/ideas
+    about: Suggest and vote on new features in Discussions
+  - name: Security Vulnerability
+    url: mailto:security@monitorworkspace.com
+    about: Report security issues privately via email — DO NOT open a public issue
