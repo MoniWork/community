@@ -1,0 +1,96 @@
+name: Bug Report
+description: Report a bug or unexpected behavior in MonitorWorkspace
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the sections below so we can reproduce and fix the issue quickly.
+
+        **Important:** Never include API keys, service account credentials, or real user data in your report.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what went wrong...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Error messages
+      description: If applicable, add screenshots or paste error messages. REDACT any sensitive data!
+
+  - type: dropdown
+    id: plan
+    attributes:
+      label: Plan
+      options:
+        - Free
+        - Pro
+        - Business
+        - Enterprise
+    validations:
+      required: true
+
+  - type: dropdown
+    id: workspace-edition
+    attributes:
+      label: Google Workspace edition
+      options:
+        - Business Starter
+        - Business Standard
+        - Business Plus
+        - Enterprise Standard
+        - Enterprise Plus
+        - Education Fundamentals
+        - Education Standard
+        - Education Plus
+        - Essentials
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser
+      placeholder: e.g., Chrome 120, Firefox 122, Safari 17
+
+  - type: input
+    id: user-count
+    attributes:
+      label: Approximate user count in workspace
+      placeholder: e.g., 50
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any other relevant information (e.g., recent changes, affected users, frequency).
