@@ -1,6 +1,6 @@
 # MonitorWorkspace Community
 
-Welcome to the **MonitorWorkspace** community hub! This repository hosts our public discussions, feature requests, and support channels.
+Welcome to the **MonitorWorkspace** community hub\! This repository hosts our public discussions, feature requests, and support channels.
 
 ## What is MonitorWorkspace?
 
@@ -10,11 +10,13 @@ MonitorWorkspace is a **Google Workspace monitoring and administration tool** fo
 
 | | |
 |---|---|
-| **Website** | [monitorworkspace.com](https://monitorworkspace.com) |
-| **Pricing** | [monitorworkspace.com/pricing](https://monitorworkspace.com/pricing) |
-| **Terms of Service** | [monitorworkspace.com/terms](https://monitorworkspace.com/terms) |
-| **Privacy Policy** | [monitorworkspace.com/privacy](https://monitorworkspace.com/privacy) |
-| **Support** | [monitorworkspace.com/support](https://monitorworkspace.com/support) |
+| **Website** | [www.monitorworkspace.com](https://www.monitorworkspace.com) |
+| **Pricing** | [www.monitorworkspace.com/pricing](https://www.monitorworkspace.com/pricing) |
+| **Blog** | [www.monitorworkspace.com/blog](https://www.monitorworkspace.com/blog) |
+| **Use Cases** | [www.monitorworkspace.com/use-cases](https://www.monitorworkspace.com/use-cases) |
+| **Terms of Service** | [www.monitorworkspace.com/terms](https://www.monitorworkspace.com/terms) |
+| **Privacy Policy** | [www.monitorworkspace.com/privacy](https://www.monitorworkspace.com/privacy) |
+| **Support** | [www.monitorworkspace.com/support](https://www.monitorworkspace.com/support) |
 
 ## Discussions
 
@@ -33,12 +35,12 @@ For bug reports, please [open an issue](https://github.com/MoniWork/community/is
 
 ## Community Guidelines
 
-Please read our [Community Guidelines](https://github.com/MoniWork/community/discussions/6) before participating.
+Please read our [Community Guidelines](https://github.com/MoniWork/community/discussions/15) before participating.
 
 ## Quick Links
 
-- [Getting Started FAQ](https://github.com/MoniWork/community/discussions/2)
-- [Feature Requests & Roadmap](https://github.com/MoniWork/community/discussions/3)
-- [Pricing & Plans Q&A](https://github.com/MoniWork/community/discussions/4)
-- [Setup Guide](https://github.com/MoniWork/community/discussions/5)
-- [Security & Compliance FAQ](https://github.com/MoniWork/community/discussions/8)
+- [Getting Started FAQ](https://github.com/MoniWork/community/discussions/11)
+- [Feature Requests & Roadmap](https://github.com/MoniWork/community/discussions/12)
+- [Pricing & Plans Q&A](https://github.com/MoniWork/community/discussions/13)
+- [Setup Guide](https://github.com/MoniWork/community/discussions/14)
+- [Security & Compliance FAQ](https://github.com/MoniWork/community/discussions/17)
