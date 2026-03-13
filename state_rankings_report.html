@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>51-Jurisdiction Rankings — MonitorWorkspace</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155; --border: #475569;
+  --text: #e2e8f0; --text-muted: #94a3b8; --accent: #38bdf8;
+  --green: #4ade80; --yellow: #fbbf24; --red: #f87171;
+  --purple: #a78bfa; --pink: #f472b6; --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* Navigation */
+.site-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.site-nav .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.site-nav a { display: block; padding: 14px 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Hero */
+.hero { padding: 80px 24px 60px; text-align: center; background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(167,139,250,0.06) 50%, rgba(244,114,182,0.04) 100%); border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.hero h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.hero .subtitle { color: var(--text-muted); font-size: 16px; max-width: 700px; margin: 0 auto 28px; }
+.hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .big { font-size: 42px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.hero-stat .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi { background: var(--surface); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+.kpi .value { font-size: 32px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+.kpi .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.kpi.green .value { color: var(--green); }
+.kpi.yellow .value { color: var(--yellow); }
+.kpi.red .value { color: var(--red); }
+.kpi.purple .value { color: var(--purple); }
+.kpi.orange .value { color: var(--orange); }
+
+/* Section */
+.section { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section h2 .badge { font-size: 11px; background: var(--surface2); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); font-weight: 400; }
+.section h3 { font-size: 14px; margin-bottom: 8px; color: var(--text-muted); }
+
+/* Grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:hover { background: var(--surface2); }
+.bar-cell { width: 120px; }
+.bar-bg { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.bar-green { background: var(--green); } .bar-yellow { background: var(--yellow); }
+.bar-red { background: var(--red); } .bar-accent { background: var(--accent); }
+
+/* Charts */
+.chart-wrap { position: relative; height: 300px; }
+.chart-wrap-sm { position: relative; height: 260px; }
+.chart-wrap-lg { position: relative; height: 400px; }
+
+/* State heatmap */
+.state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
+.state-cell { text-align: center; padding: 6px 2px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: default; }
+.state-cell .pct { font-size: 10px; font-weight: 400; opacity: 0.8; }
+
+/* Badges */
+.sec-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.sec-good { background: rgba(74,222,128,0.15); color: var(--green); }
+.sec-warn { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.sec-bad { background: rgba(248,113,113,0.15); color: var(--red); }
+.uplift { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: rgba(74,222,128,0.15); color: var(--green); }
+
+/* Callout */
+.callout { border-left: 4px solid var(--accent); background: rgba(56,189,248,0.06); padding: 16px 20px; margin-bottom: 24px; border-radius: 0 8px 8px 0; }
+.callout ul { margin: 0; padding-left: 18px; }
+.callout li { margin-bottom: 6px; color: var(--text); font-size: 14px; }
+.callout li strong { color: var(--accent); }
+
+/* CTA box */
+.cta-box { text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 24px; background: var(--surface); }
+.cta-box p { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+.cta-box .btn { display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; }
+.cta-box .btn:hover { opacity: 0.9; text-decoration: none; }
+
+/* Pull quote */
+.pull-quote { border-left: 4px solid var(--purple); padding: 20px 24px; margin: 24px 0; font-size: 18px; font-style: italic; color: var(--text); line-height: 1.5; }
+.pull-quote cite { display: block; font-size: 12px; font-style: normal; color: var(--text-muted); margin-top: 8px; }
+
+/* Report cards (index page) */
+.report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: transform 0.2s, border-color 0.2s; display: block; }
+.report-card:hover { transform: translateY(-4px); border-color: var(--accent); text-decoration: none; }
+.report-card .card-stat { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.report-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.report-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-inner"><a href="https://monitorworkspace.com" target="_blank" style="font-weight:700;color:var(--accent);">MonitorWorkspace</a><a href="index.html">Hub</a><a href="public_sector_report.html">Public Sector</a><a href="cross_sector_report.html">Cross-Sector</a><a href="state_rankings_report.html" class="active">State Rankings</a><a href="provider_security_report.html">Provider Security</a><a href="education_report.html">Education &amp; K-12</a><a href="education_onepager.html">K-12 One-Pager</a></div></nav>
+
+<div class="hero">
+  <h1>DMARC Adoption: 66.3% to 22.8% Across U.S. States</h1>
+  <p class="subtitle">Email security rankings for 51 jurisdictions based on public-sector domain analysis</p>
+</div>
+
+<div class="container">
+
+<div class="kpi-row">
+  <div class="kpi"><div class="value">51</div><div class="label">Jurisdictions</div></div>
+  <div class="kpi yellow"><div class="value">45.5%</div><div class="label">Avg DMARC</div></div>
+  <div class="kpi green"><div class="value">75.1%</div><div class="label">Avg SPF</div></div>
+  <div class="kpi green"><div class="value">DC</div><div class="label">Best DMARC (66.3%)</div></div>
+  <div class="kpi red"><div class="value">ND</div><div class="label">Worst DMARC (22.8%)</div></div>
+</div>
+
+<div class="section">
+  <h2>DMARC Heatmap <span class="badge">51 jurisdictions</span></h2>
+  <div class="state-grid" id="state-heatmap"></div>
+</div>
+
+<div class="section">
+  <h2>Top 10 &amp; Bottom 10</h2>
+  <div class="grid-2">
+    <div><h3>Top 10 by DMARC</h3><div class="chart-wrap"><canvas id="chart-top10"></canvas></div></div>
+    <div><h3>Bottom 10 by DMARC</h3><div class="chart-wrap"><canvas id="chart-bottom10"></canvas></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>SPF vs DMARC Scatter</h2>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Each bubble is a state. Size = number of unique domains. Position = SPF (x) vs DMARC (y) adoption rate.</p>
+  <div class="chart-wrap-lg"><canvas id="chart-scatter"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>Full Rankings</h2>
+  <table>
+    <thead><tr><th>#</th><th>State</th><th class="num">Entities</th><th class="num">Domains</th><th class="num">SPF %</th><th class="num">DMARC %</th><th>DMARC</th></tr></thead>
+    <tbody id="table-rankings"></tbody>
+  </table>
+</div>
+
+<div class="cta-box">
+  <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;">How does your organization score?</p>
+  <p>Enter your domain at MonitorWorkspace to get a free personalized email security scorecard — benchmarked against your peers.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;">
+    <a class="btn" href="https://monitorworkspace.com/scorecard" target="_blank">Get Your Free Scorecard</a>
+    <a class="btn" style="background:var(--surface2);color:var(--text);" href="index.html">Back to Research Hub</a>
+  </div>
+</div>
+
+<footer>MonitorWorkspace &middot; A Lokentra product &middot; <a href="https://monitorworkspace.com">monitorworkspace.com</a> &middot; 51-Jurisdiction Rankings &middot; March 2026</footer>
+</div>
+
+<script>
+const COLORS = ['#38bdf8','#4ade80','#fbbf24','#f87171','#a78bfa','#fb923c','#f472b6','#2dd4bf','#818cf8','#e879f9','#34d399','#fcd34d','#f97316','#60a5fa','#c084fc','#67e8f9','#d946ef','#a3e635'];
+const fmt = n => typeof n === 'number' ? n.toLocaleString() : n;
+
+const STATES = [{"code":"DC","total":86,"has_domain":83,"pct":96.5,"name":"District of Columbia","spf":85.5,"dmarc":66.3,"domains":83,"mx":95.2,"proxy":7.6},{"code":"MA","total":898,"has_domain":693,"pct":77.2,"name":"Massachusetts","spf":88.4,"dmarc":62.2,"domains":588,"mx":92.9,"proxy":21.8},{"code":"CT","total":436,"has_domain":336,"pct":77.1,"name":"Connecticut","spf":82.7,"dmarc":60.5,"domains":324,"mx":86.4,"proxy":21.4},{"code":"OR","total":548,"has_domain":512,"pct":93.4,"name":"Oregon","spf":87.3,"dmarc":60.3,"domains":504,"mx":88.3,"proxy":13.3},{"code":"NY","total":2972,"has_domain":2518,"pct":84.7,"name":"New York","spf":80.7,"dmarc":59.4,"domains":2217,"mx":84.0,"proxy":20.1},{"code":"MD","total":256,"has_domain":216,"pct":84.4,"name":"Maryland","spf":84.1,"dmarc":58.4,"domains":214,"mx":86.9,"proxy":23.1},{"code":"LA","total":706,"has_domain":173,"pct":24.5,"name":"Louisiana","spf":81.7,"dmarc":58.2,"domains":153,"mx":83.0,"proxy":16.5},{"code":"WI","total":2459,"has_domain":1300,"pct":52.9,"name":"Wisconsin","spf":86.7,"dmarc":57.4,"domains":1147,"mx":89.8,"proxy":11.9},{"code":"WA","total":735,"has_domain":611,"pct":83.1,"name":"Washington","spf":81.9,"dmarc":55.5,"domains":596,"mx":86.2,"proxy":13.0},{"code":"ME","total":808,"has_domain":337,"pct":41.7,"name":"Maine","spf":76.3,"dmarc":55.3,"domains":253,"mx":82.2,"proxy":10.1},{"code":"VA","total":655,"has_domain":512,"pct":78.2,"name":"Virginia","spf":78.6,"dmarc":55.3,"domains":499,"mx":82.2,"proxy":15.1},{"code":"NJ","total":1361,"has_domain":1122,"pct":82.4,"name":"New Jersey","spf":82.1,"dmarc":54.9,"domains":1081,"mx":85.6,"proxy":14.6},{"code":"NH","total":588,"has_domain":221,"pct":37.6,"name":"New Hampshire","spf":86.8,"dmarc":54.4,"domains":182,"mx":87.9,"proxy":13.1},{"code":"NV","total":69,"has_domain":65,"pct":94.2,"name":"Nevada","spf":86.2,"dmarc":53.8,"domains":65,"mx":90.8,"proxy":30.5},{"code":"AR","total":1255,"has_domain":634,"pct":50.5,"name":"Arkansas","spf":79.0,"dmarc":52.8,"domains":538,"mx":85.3,"proxy":10.9},{"code":"MI","total":2844,"has_domain":1799,"pct":63.3,"name":"Michigan","spf":77.4,"dmarc":50.5,"domains":1572,"mx":82.5,"proxy":10.9},{"code":"PA","total":3576,"has_domain":1813,"pct":50.7,"name":"Pennsylvania","spf":80.4,"dmarc":50.0,"domains":1563,"mx":82.0,"proxy":16.7},{"code":"RI","total":126,"has_domain":88,"pct":69.8,"name":"Rhode Island","spf":69.7,"dmarc":50.0,"domains":66,"mx":68.2,"proxy":28.9},{"code":"AZ","total":915,"has_domain":774,"pct":84.6,"name":"Arizona","spf":75.8,"dmarc":49.0,"domains":674,"mx":83.5,"proxy":13.1},{"code":"IN","total":2164,"has_domain":1104,"pct":51.0,"name":"Indiana","spf":79.4,"dmarc":47.9,"domains":867,"mx":79.6,"proxy":10.6},{"code":"TX","total":6365,"has_domain":4644,"pct":73.0,"name":"Texas","spf":78.3,"dmarc":46.9,"domains":3727,"mx":84.1,"proxy":12.8},{"code":"NC","total":1150,"has_domain":925,"pct":80.4,"name":"North Carolina","spf":74.1,"dmarc":46.7,"domains":919,"mx":78.2,"proxy":15.0},{"code":"CO","total":646,"has_domain":588,"pct":91.0,"name":"Colorado","spf":74.8,"dmarc":46.7,"domains":527,"mx":77.4,"proxy":14.7},{"code":"WY","total":190,"has_domain":154,"pct":81.1,"name":"Wyoming","spf":75.2,"dmarc":46.4,"domains":153,"mx":82.4,"proxy":18.3},{"code":"OH","total":3512,"has_domain":2221,"pct":63.2,"name":"Ohio","spf":73.7,"dmarc":44.9,"domains":1722,"mx":80.1,"proxy":11.2},{"code":"UT","total":463,"has_domain":412,"pct":89.0,"name":"Utah","spf":78.9,"dmarc":44.9,"domains":412,"mx":86.9,"proxy":9.5},{"code":"CA","total":3801,"has_domain":2331,"pct":61.3,"name":"California","spf":71.4,"dmarc":44.8,"domains":2089,"mx":76.9,"proxy":16.8},{"code":"VT","total":489,"has_domain":211,"pct":43.1,"name":"Vermont","spf":72.4,"dmarc":44.8,"domains":163,"mx":77.9,"proxy":9.4},{"code":"NM","total":363,"has_domain":249,"pct":68.6,"name":"New Mexico","spf":78.6,"dmarc":44.4,"domains":248,"mx":82.7,"proxy":14.1},{"code":"IL","total":3981,"has_domain":2127,"pct":53.4,"name":"Illinois","spf":77.7,"dmarc":43.9,"domains":1973,"mx":80.5,"proxy":11.7},{"code":"MO","total":1983,"has_domain":1402,"pct":70.7,"name":"Missouri","spf":74.9,"dmarc":42.5,"domains":1353,"mx":80.2,"proxy":10.0},{"code":"GA","total":1026,"has_domain":872,"pct":85.0,"name":"Georgia","spf":74.9,"dmarc":41.5,"domains":778,"mx":79.8,"proxy":23.5},{"code":"IA","total":1430,"has_domain":1084,"pct":75.8,"name":"Iowa","spf":72.8,"dmarc":41.2,"domains":1075,"mx":76.1,"proxy":10.0},{"code":"MT","total":695,"has_domain":555,"pct":79.9,"name":"Montana","spf":74.7,"dmarc":41.0,"domains":458,"mx":82.1,"proxy":10.9},{"code":"TN","total":654,"has_domain":589,"pct":90.1,"name":"Tennessee","spf":77.5,"dmarc":40.5,"domains":519,"mx":80.2,"proxy":16.6},{"code":"AL","total":745,"has_domain":599,"pct":80.4,"name":"Alabama","spf":79.6,"dmarc":40.1,"domains":553,"mx":79.2,"proxy":16.0},{"code":"SC","total":480,"has_domain":412,"pct":85.8,"name":"South Carolina","spf":73.1,"dmarc":40.1,"domains":357,"mx":75.9,"proxy":19.9},{"code":"KY","total":772,"has_domain":676,"pct":87.6,"name":"Kentucky","spf":69.7,"dmarc":38.8,"domains":608,"mx":71.9,"proxy":12.8},{"code":"OK","total":1543,"has_domain":794,"pct":51.5,"name":"Oklahoma","spf":76.6,"dmarc":38.5,"domains":693,"mx":85.3,"proxy":7.4},{"code":"MN","total":4348,"has_domain":2520,"pct":58.0,"name":"Minnesota","spf":71.1,"dmarc":37.7,"domains":2100,"mx":74.2,"proxy":12.0},{"code":"ID","total":448,"has_domain":216,"pct":48.2,"name":"Idaho","spf":70.7,"dmarc":37.7,"domains":215,"mx":74.0,"proxy":6.3},{"code":"AK","total":240,"has_domain":138,"pct":57.5,"name":"Alaska","spf":77.5,"dmarc":36.2,"domains":138,"mx":88.4,"proxy":9.0},{"code":"DE","total":112,"has_domain":95,"pct":84.8,"name":"Delaware","spf":61.7,"dmarc":36.2,"domains":94,"mx":66.0,"proxy":16.1},{"code":"KS","total":2387,"has_domain":965,"pct":40.4,"name":"Kansas","spf":74.7,"dmarc":34.9,"domains":845,"mx":77.0,"proxy":9.4},{"code":"FL","total":2936,"has_domain":2352,"pct":80.1,"name":"Florida","spf":62.1,"dmarc":34.5,"domains":2099,"mx":71.8,"proxy":21.0},{"code":"NE","total":1252,"has_domain":548,"pct":43.8,"name":"Nebraska","spf":63.8,"dmarc":31.8,"domains":541,"mx":67.5,"proxy":15.1},{"code":"MS","total":574,"has_domain":375,"pct":65.3,"name":"Mississippi","spf":73.8,"dmarc":31.8,"domains":374,"mx":76.7,"proxy":17.1},{"code":"HI","total":19,"has_domain":19,"pct":100.0,"name":"Hawaii","spf":42.1,"dmarc":31.6,"domains":19,"mx":42.1,"proxy":12.5},{"code":"WV","total":382,"has_domain":286,"pct":74.9,"name":"West Virginia","spf":68.4,"dmarc":30.5,"domains":285,"mx":73.3,"proxy":8.1},{"code":"SD","total":1483,"has_domain":458,"pct":30.9,"name":"South Dakota","spf":50.3,"dmarc":23.6,"domains":445,"mx":49.4,"proxy":16.4},{"code":"ND","total":1966,"has_domain":509,"pct":25.9,"name":"North Dakota","spf":55.3,"dmarc":22.8,"domains":492,"mx":60.6,"proxy":7.4}];
+
+// Heatmap
+let heatHtml = '';
+const sorted = [...STATES].sort((a,b) => a.code.localeCompare(b.code));
+sorted.forEach(s => {
+  const p = s.dmarc || 0;
+  let bg, fg;
+  if (p >= 55) { bg = 'rgba(74,222,128,0.3)'; fg = '#4ade80'; }
+  else if (p >= 47) { bg = 'rgba(56,189,248,0.25)'; fg = '#38bdf8'; }
+  else if (p >= 40) { bg = 'rgba(251,191,36,0.25)'; fg = '#fbbf24'; }
+  else { bg = 'rgba(248,113,113,0.2)'; fg = '#f87171'; }
+  heatHtml += `<div class="state-cell" style="background:${bg};color:${fg};" title="${s.name || s.code}: DMARC ${p}%">${s.code}<div class="pct">${p}%</div></div>`;
+});
+document.getElementById('state-heatmap').innerHTML = heatHtml;
+
+// Top 10 / Bottom 10
+const top10 = STATES.slice(0, 10);
+const bottom10 = [...STATES].slice(-10).reverse();
+
+new Chart(document.getElementById('chart-top10').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: top10.map(s => s.code + (s.name ? ' (' + s.name.substring(0,12) + ')' : '')),
+    datasets: [{ data: top10.map(s => s.dmarc), backgroundColor: '#4ade80', borderRadius: 4 }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+      y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chart-bottom10').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: bottom10.map(s => s.code + (s.name ? ' (' + s.name.substring(0,12) + ')' : '')),
+    datasets: [{ data: bottom10.map(s => s.dmarc), backgroundColor: '#f87171', borderRadius: 4 }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+      y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// Scatter
+const bubbleData = STATES.filter(s => s.spf > 0 && s.dmarc > 0).map(s => ({
+  x: s.spf, y: s.dmarc,
+  r: Math.max(4, Math.min(25, Math.sqrt(s.domains || 100) * 0.4)),
+  label: s.code
+}));
+new Chart(document.getElementById('chart-scatter').getContext('2d'), {
+  type: 'bubble',
+  data: {
+    datasets: [{
+      data: bubbleData,
+      backgroundColor: bubbleData.map(b => {
+        if (b.y >= 55) return 'rgba(74,222,128,0.5)';
+        if (b.y >= 47) return 'rgba(56,189,248,0.5)';
+        if (b.y >= 40) return 'rgba(251,191,36,0.5)';
+        return 'rgba(248,113,113,0.5)';
+      }),
+      borderColor: bubbleData.map(b => {
+        if (b.y >= 55) return '#4ade80';
+        if (b.y >= 47) return '#38bdf8';
+        if (b.y >= 40) return '#fbbf24';
+        return '#f87171';
+      }),
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const s = STATES.filter(s => s.spf > 0 && s.dmarc > 0)[ctx.dataIndex];
+            return `${s.name || s.code}: SPF ${s.spf}%, DMARC ${s.dmarc}%, ${fmt(s.domains || 0)} domains`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { title: { display: true, text: 'SPF Adoption %', color: '#94a3b8' }, min: 50, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+      y: { title: { display: true, text: 'DMARC Adoption %', color: '#94a3b8' }, min: 20, max: 80, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// Full table
+let rHtml = '';
+STATES.forEach((s, i) => {
+  const bc = s.dmarc >= 55 ? 'bar-green' : s.dmarc >= 45 ? 'bar-yellow' : 'bar-red';
+  rHtml += `<tr><td>${i+1}</td><td><strong>${s.code}</strong> ${s.name || ''}</td><td class="num">${fmt(s.total)}</td><td class="num">${fmt(s.domains || 0)}</td><td class="num">${s.spf}%</td><td class="num">${s.dmarc}%</td><td class="bar-cell"><div class="bar-bg"><div class="bar-fill ${bc}" style="width:${s.dmarc}%"></div></div></td></tr>`;
+});
+document.getElementById('table-rankings').innerHTML = rHtml;
+
+</script>
+</body>
+</html>

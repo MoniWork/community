@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education & K-12 Email Security — MonitorWorkspace</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155; --border: #475569;
+  --text: #e2e8f0; --text-muted: #94a3b8; --accent: #38bdf8;
+  --green: #4ade80; --yellow: #fbbf24; --red: #f87171;
+  --purple: #a78bfa; --pink: #f472b6; --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* Navigation */
+.site-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.site-nav .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.site-nav a { display: block; padding: 14px 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Hero */
+.hero { padding: 80px 24px 60px; text-align: center; background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(167,139,250,0.06) 50%, rgba(244,114,182,0.04) 100%); border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.hero h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.hero .subtitle { color: var(--text-muted); font-size: 16px; max-width: 700px; margin: 0 auto 28px; }
+.hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .big { font-size: 42px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.hero-stat .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi { background: var(--surface); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+.kpi .value { font-size: 32px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+.kpi .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.kpi.green .value { color: var(--green); }
+.kpi.yellow .value { color: var(--yellow); }
+.kpi.red .value { color: var(--red); }
+.kpi.purple .value { color: var(--purple); }
+.kpi.orange .value { color: var(--orange); }
+
+/* Section */
+.section { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section h2 .badge { font-size: 11px; background: var(--surface2); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); font-weight: 400; }
+.section h3 { font-size: 14px; margin-bottom: 8px; color: var(--text-muted); }
+
+/* Grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:hover { background: var(--surface2); }
+.bar-cell { width: 120px; }
+.bar-bg { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.bar-green { background: var(--green); } .bar-yellow { background: var(--yellow); }
+.bar-red { background: var(--red); } .bar-accent { background: var(--accent); }
+
+/* Charts */
+.chart-wrap { position: relative; height: 300px; }
+.chart-wrap-sm { position: relative; height: 260px; }
+.chart-wrap-lg { position: relative; height: 400px; }
+
+/* State heatmap */
+.state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
+.state-cell { text-align: center; padding: 6px 2px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: default; }
+.state-cell .pct { font-size: 10px; font-weight: 400; opacity: 0.8; }
+
+/* Badges */
+.sec-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.sec-good { background: rgba(74,222,128,0.15); color: var(--green); }
+.sec-warn { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.sec-bad { background: rgba(248,113,113,0.15); color: var(--red); }
+.uplift { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: rgba(74,222,128,0.15); color: var(--green); }
+
+/* Callout */
+.callout { border-left: 4px solid var(--accent); background: rgba(56,189,248,0.06); padding: 16px 20px; margin-bottom: 24px; border-radius: 0 8px 8px 0; }
+.callout ul { margin: 0; padding-left: 18px; }
+.callout li { margin-bottom: 6px; color: var(--text); font-size: 14px; }
+.callout li strong { color: var(--accent); }
+
+/* CTA box */
+.cta-box { text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 24px; background: var(--surface); }
+.cta-box p { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+.cta-box .btn { display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; }
+.cta-box .btn:hover { opacity: 0.9; text-decoration: none; }
+
+/* Pull quote */
+.pull-quote { border-left: 4px solid var(--purple); padding: 20px 24px; margin: 24px 0; font-size: 18px; font-style: italic; color: var(--text); line-height: 1.5; }
+.pull-quote cite { display: block; font-size: 12px; font-style: normal; color: var(--text-muted); margin-top: 8px; }
+
+/* Report cards (index page) */
+.report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: transform 0.2s, border-color 0.2s; display: block; }
+.report-card:hover { transform: translateY(-4px); border-color: var(--accent); text-decoration: none; }
+.report-card .card-stat { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.report-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.report-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-inner"><a href="https://monitorworkspace.com" target="_blank" style="font-weight:700;color:var(--accent);">MonitorWorkspace</a><a href="index.html">Hub</a><a href="public_sector_report.html">Public Sector</a><a href="cross_sector_report.html">Cross-Sector</a><a href="state_rankings_report.html">State Rankings</a><a href="provider_security_report.html">Provider Security</a><a href="education_report.html" class="active">Education &amp; K-12</a><a href="education_onepager.html">K-12 One-Pager</a></div></nav>
+
+<div class="hero">
+  <h1>K-12 Districts Have the Lowest Email Security Gateway Adoption in the Public Sector</h1>
+  <p class="subtitle">Education email security analysis: 18,476 K-12 districts and 3,246 higher education institutions across 51 jurisdictions</p>
+</div>
+
+<div class="container">
+
+<div class="callout">
+  <ul>
+    <li><strong>18,476 K-12 districts</strong> in the national registry &mdash; the second-largest public entity category</li>
+    <li><strong>Only 8.2% of K-12 domains use an email security gateway</strong> &mdash; lowest of any entity type (counties: 25.9%, higher ed: 20.4%)</li>
+    <li><strong>K-12 DMARC averages 46.7%</strong> nationally &mdash; wide state variation from 67.5% (OR) to 7.7% (WV)</li>
+    <li><strong>Higher education leads all entity types</strong> with 84.4% DMARC and 20.4% gateway adoption</li>
+    <li><strong>Texas K-12 outperforms</strong>: 67.2% DMARC vs 46.7% national average (+20.5pp)</li>
+  </ul>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="value">18,476</div><div class="label">K-12 Districts</div></div>
+  <div class="kpi purple"><div class="value">3,246</div><div class="label">Higher Ed Institutions</div></div>
+  <div class="kpi yellow"><div class="value">46.7%</div><div class="label">K-12 Avg DMARC</div></div>
+  <div class="kpi green"><div class="value">84.4%</div><div class="label">Higher Ed Avg DMARC</div></div>
+  <div class="kpi red"><div class="value">8.2%</div><div class="label">K-12 Gateway Rate</div></div>
+  <div class="kpi green"><div class="value">20.4%</div><div class="label">Higher Ed Gateway Rate</div></div>
+</div>
+
+<div class="section">
+  <h2>K-12 vs Higher Ed: The Security Gap</h2>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Despite near-universal domain coverage, K-12 and higher education show dramatically different email security postures.</p>
+  <div class="grid-2">
+    <div><div class="chart-wrap"><canvas id="chart-compare"></canvas></div></div>
+    <div>
+      <table>
+        <thead><tr><th>Metric</th><th class="num">K-12</th><th class="num">Higher Ed</th><th>Gap</th></tr></thead>
+        <tbody>
+          <tr><td>Entities</td><td class="num">18,476</td><td class="num">3,246</td><td></td></tr>
+          <tr><td>Domain Coverage</td><td class="num">86.3%</td><td class="num">98.2%</td><td><span class="sec-badge sec-good">+11.9pp</span></td></tr>
+          <tr><td>Avg SPF</td><td class="num">74.6%</td><td class="num">89.3%</td><td><span class="sec-badge sec-warn">+14.7pp</span></td></tr>
+          <tr><td>Avg DMARC</td><td class="num">46.7%</td><td class="num">84.4%</td><td><span class="sec-badge sec-bad">+37.7pp</span></td></tr>
+          <tr><td>Gateway Adoption</td><td class="num">8.2%</td><td class="num">20.4%</td><td><span class="sec-badge sec-bad">+12.2pp</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Email Gateway Adoption by Entity Type</h2>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">K-12 districts are the least likely public-sector entity to use an email security gateway (Barracuda, Proofpoint, Mimecast, etc.), leaving them more exposed to phishing and business email compromise.</p>
+  <div class="chart-wrap"><canvas id="chart-proxy"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>K-12 DMARC Rankings by State <span class="badge">49 states</span></h2>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">DMARC adoption across K-12 districts varies enormously by state &mdash; from 67.5% to 7.7%.</p>
+  <div class="grid-2">
+    <div><h3>Top 10 States</h3><div class="chart-wrap"><canvas id="chart-k12-top"></canvas></div></div>
+    <div><h3>Bottom 10 States</h3><div class="chart-wrap"><canvas id="chart-k12-bottom"></canvas></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Higher Education DMARC Rankings <span class="badge">48 states</span></h2>
+  <div class="grid-2">
+    <div><h3>Top 10 States</h3><div class="chart-wrap"><canvas id="chart-he-top"></canvas></div></div>
+    <div><h3>Bottom 10 States</h3><div class="chart-wrap"><canvas id="chart-he-bottom"></canvas></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>K-12 SPF vs DMARC by State</h2>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Each bubble is a state. Size = number of K-12 domains. The gap between SPF and DMARC represents districts with basic records but no enforcement.</p>
+  <div class="chart-wrap-lg"><canvas id="chart-scatter"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>Full K-12 State Rankings</h2>
+  <table>
+    <thead><tr><th>#</th><th>State</th><th class="num">K-12 Entities</th><th class="num">Domains</th><th class="num">SPF %</th><th class="num">DMARC %</th><th>DMARC</th></tr></thead>
+    <tbody id="table-k12"></tbody>
+  </table>
+</div>
+
+<div class="pull-quote">
+  "K-12 school districts represent the largest gap between digital presence and email security in the U.S. public sector &mdash; 86% domain coverage but only 8% gateway adoption."
+  <cite>MonitorWorkspace, March 2026</cite>
+</div>
+
+<div class="cta-box">
+  <p style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;">How does your organization score?</p>
+  <p>Enter your domain at MonitorWorkspace to get a free personalized email security scorecard — benchmarked against your peers.</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px;">
+    <a class="btn" href="https://monitorworkspace.com/scorecard" target="_blank">Get Your Free Scorecard</a>
+    <a class="btn" style="background:var(--surface2);color:var(--text);" href="index.html">Back to Research Hub</a>
+  </div>
+</div>
+
+<footer>MonitorWorkspace &middot; A Lokentra product &middot; <a href="https://monitorworkspace.com">monitorworkspace.com</a> &middot; 21,722 education entities &middot; March 2026</footer>
+</div>
+
+<script>
+const COLORS = ['#38bdf8','#4ade80','#fbbf24','#f87171','#a78bfa','#fb923c','#f472b6','#2dd4bf','#818cf8','#e879f9','#34d399','#fcd34d','#f97316','#60a5fa','#c084fc','#67e8f9','#d946ef','#a3e635'];
+const fmt = n => typeof n === 'number' ? n.toLocaleString() : n;
+
+const K12 = [{"code":"OR","name":"Oregon","k12_entities":223,"he_entities":49,"k12":{"domains":209,"spf":91.9,"dmarc":67.5},"he":{"domains":45,"spf":93.3,"dmarc":91.1}},{"code":"NY","name":"New York","k12_entities":1111,"he_entities":276,"k12":{"domains":924,"spf":86.1,"dmarc":67.3},"he":{"domains":274,"spf":81.4,"dmarc":71.9}},{"code":"TX","name":"Texas","k12_entities":1245,"he_entities":189,"k12":{"domains":1229,"spf":87.8,"dmarc":67.2},"he":{"domains":147,"spf":96.6,"dmarc":91.8}},{"code":"WI","name":"Wisconsin","k12_entities":473,"he_entities":64,"k12":{"domains":461,"spf":88.7,"dmarc":66.4},"he":{"domains":61,"spf":95.1,"dmarc":90.2}},{"code":"MD","name":"Maryland","k12_entities":26,"he_entities":49,"k12":{"domains":26,"spf":84.6,"dmarc":65.4},"he":{"domains":49,"spf":100.0,"dmarc":95.9}},{"code":"DC","name":"District of Columbia","k12_entities":70,"he_entities":15,"k12":{"domains":69,"spf":82.6,"dmarc":62.3},"he":{"domains":14,"spf":100.0,"dmarc":85.7}},{"code":"WA","name":"Washington","k12_entities":348,"he_entities":67,"k12":{"domains":250,"spf":86.8,"dmarc":62.0},"he":{"domains":65,"spf":92.3,"dmarc":84.6}},{"code":"IA","name":"Iowa","k12_entities":339,"he_entities":52,"k12":{"domains":327,"spf":84.7,"dmarc":61.8},"he":{"domains":52,"spf":92.3,"dmarc":92.3}},{"code":"NJ","name":"New Jersey","k12_entities":700,"he_entities":76,"k12":{"domains":661,"spf":86.5,"dmarc":61.4},"he":{"domains":74,"spf":73.0,"dmarc":66.2}},{"code":"AK","name":"Alaska","k12_entities":54,"he_entities":7,"k12":{"domains":54,"spf":83.3,"dmarc":61.1},"he":{"domains":7,"spf":85.7,"dmarc":42.9}},{"code":"CT","name":"Connecticut","k12_entities":209,"he_entities":40,"k12":{"domains":195,"spf":86.2,"dmarc":61.0},"he":{"domains":40,"spf":62.5,"dmarc":57.5}},{"code":"WY","name":"Wyoming","k12_entities":60,"he_entities":8,"k12":{"domains":56,"spf":76.8,"dmarc":60.7},"he":{"domains":8,"spf":100.0,"dmarc":100.0}},{"code":"IN","name":"Indiana","k12_entities":444,"he_entities":58,"k12":{"domains":383,"spf":86.2,"dmarc":60.1},"he":{"domains":55,"spf":96.4,"dmarc":94.5}},{"code":"PA","name":"Pennsylvania","k12_entities":792,"he_entities":158,"k12":{"domains":696,"spf":88.1,"dmarc":58.8},"he":{"domains":157,"spf":94.3,"dmarc":88.5}},{"code":"MA","name":"Massachusetts","k12_entities":428,"he_entities":105,"k12":{"domains":416,"spf":87.7,"dmarc":57.5},"he":{"domains":102,"spf":96.1,"dmarc":93.1}},{"code":"VA","name":"Virginia","k12_entities":213,"he_entities":82,"k12":{"domains":162,"spf":79.6,"dmarc":56.2},"he":{"domains":81,"spf":90.1,"dmarc":88.9}},{"code":"MI","name":"Michigan","k12_entities":903,"he_entities":85,"k12":{"domains":816,"spf":74.8,"dmarc":54.0},"he":{"domains":85,"spf":95.3,"dmarc":91.8}},{"code":"CO","name":"Colorado","k12_entities":272,"he_entities":39,"k12":{"domains":206,"spf":81.6,"dmarc":51.9},"he":{"domains":39,"spf":92.3,"dmarc":92.3}},{"code":"MO","name":"Missouri","k12_entities":567,"he_entities":81,"k12":{"domains":546,"spf":78.4,"dmarc":51.1},"he":{"domains":78,"spf":97.4,"dmarc":89.7}},{"code":"UT","name":"Utah","k12_entities":163,"he_entities":16,"k12":{"domains":150,"spf":73.3,"dmarc":50.7},"he":{"domains":13,"spf":100.0,"dmarc":84.6}},{"code":"NV","name":"Nevada","k12_entities":22,"he_entities":11,"k12":{"domains":18,"spf":77.8,"dmarc":50.0},"he":{"domains":11,"spf":100.0,"dmarc":81.8}},{"code":"MN","name":"Minnesota","k12_entities":614,"he_entities":111,"k12":{"domains":562,"spf":80.2,"dmarc":48.6},"he":{"domains":89,"spf":93.3,"dmarc":86.5}},{"code":"ME","name":"Maine","k12_entities":281,"he_entities":29,"k12":{"domains":155,"spf":70.3,"dmarc":48.4},"he":{"domains":28,"spf":89.3,"dmarc":92.9}},{"code":"IL","name":"Illinois","k12_entities":1035,"he_entities":139,"k12":{"domains":837,"spf":81.7,"dmarc":46.7},"he":{"domains":130,"spf":96.9,"dmarc":91.5}},{"code":"AR","name":"Arkansas","k12_entities":377,"he_entities":61,"k12":{"domains":263,"spf":73.8,"dmarc":46.0},"he":{"domains":56,"spf":96.4,"dmarc":87.5}},{"code":"NH","name":"New Hampshire","k12_entities":320,"he_entities":24,"k12":{"domains":85,"spf":78.8,"dmarc":45.9},"he":{"domains":24,"spf":87.5,"dmarc":50.0}},{"code":"AZ","name":"Arizona","k12_entities":770,"he_entities":39,"k12":{"domains":538,"spf":72.5,"dmarc":44.8},"he":{"domains":34,"spf":91.2,"dmarc":88.2}},{"code":"OH","name":"Ohio","k12_entities":1058,"he_entities":135,"k12":{"domains":922,"spf":72.3,"dmarc":44.5},"he":{"domains":121,"spf":88.4,"dmarc":83.5}},{"code":"CA","name":"California","k12_entities":926,"he_entities":226,"k12":{"domains":898,"spf":74.1,"dmarc":43.2},"he":{"domains":173,"spf":79.8,"dmarc":86.1}},{"code":"RI","name":"Rhode Island","k12_entities":68,"he_entities":14,"k12":{"domains":44,"spf":75.0,"dmarc":43.2},"he":{"domains":14,"spf":57.1,"dmarc":78.6}},{"code":"NM","name":"New Mexico","k12_entities":194,"he_entities":31,"k12":{"domains":102,"spf":78.4,"dmarc":42.2},"he":{"domains":31,"spf":74.2,"dmarc":67.7}},{"code":"KY","name":"Kentucky","k12_entities":185,"he_entities":50,"k12":{"domains":176,"spf":67.6,"dmarc":42.0},"he":{"domains":50,"spf":68.0,"dmarc":68.0}},{"code":"MT","name":"Montana","k12_entities":489,"he_entities":24,"k12":{"domains":291,"spf":71.8,"dmarc":41.2},"he":{"domains":23,"spf":91.3,"dmarc":78.3}},{"code":"SC","name":"South Carolina","k12_entities":105,"he_entities":58,"k12":{"domains":55,"spf":81.8,"dmarc":40.0},"he":{"domains":54,"spf":87.0,"dmarc":88.9}},{"code":"NC","name":"North Carolina","k12_entities":376,"he_entities":125,"k12":{"domains":279,"spf":65.9,"dmarc":39.1},"he":{"domains":125,"spf":98.4,"dmarc":89.6}},{"code":"KS","name":"Kansas","k12_entities":339,"he_entities":57,"k12":{"domains":324,"spf":80.2,"dmarc":38.6},"he":{"domains":55,"spf":96.4,"dmarc":87.3}},{"code":"NE","name":"Nebraska","k12_entities":280,"he_entities":31,"k12":{"domains":57,"spf":47.4,"dmarc":38.6},"he":{"domains":31,"spf":90.3,"dmarc":96.8}},{"code":"AL","name":"Alabama","k12_entities":157,"he_entities":58,"k12":{"domains":151,"spf":77.5,"dmarc":38.4},"he":{"domains":57,"spf":98.2,"dmarc":96.5}},{"code":"VT","name":"Vermont","k12_entities":183,"he_entities":16,"k12":{"domains":81,"spf":64.2,"dmarc":38.3},"he":{"domains":16,"spf":93.8,"dmarc":93.8}},{"code":"MS","name":"Mississippi","k12_entities":161,"he_entities":32,"k12":{"domains":44,"spf":77.3,"dmarc":34.1},"he":{"domains":32,"spf":100.0,"dmarc":93.8}},{"code":"GA","name":"Georgia","k12_entities":245,"he_entities":87,"k12":{"domains":172,"spf":70.3,"dmarc":33.7},"he":{"domains":87,"spf":97.7,"dmarc":93.1}},{"code":"FL","name":"Florida","k12_entities":83,"he_entities":74,"k12":{"domains":12,"spf":50.0,"dmarc":33.3},"he":{"domains":33,"spf":93.9,"dmarc":90.9}},{"code":"OK","name":"Oklahoma","k12_entities":579,"he_entities":49,"k12":{"domains":535,"spf":75.7,"dmarc":32.9},"he":{"domains":49,"spf":77.6,"dmarc":71.4}},{"code":"DE","name":"Delaware","k12_entities":45,"he_entities":7,"k12":{"domains":41,"spf":51.2,"dmarc":31.7},"he":{"domains":7,"spf":85.7,"dmarc":85.7}},{"code":"LA","name":"Louisiana","k12_entities":118,"he_entities":76,"k12":{"domains":16,"spf":62.5,"dmarc":31.2},"he":{"domains":58,"spf":94.8,"dmarc":82.8}},{"code":"TN","name":"Tennessee","k12_entities":148,"he_entities":67,"k12":{"domains":144,"spf":72.9,"dmarc":27.8},"he":{"domains":65,"spf":95.4,"dmarc":96.9}},{"code":"ND","name":"North Dakota","k12_entities":233,"he_entities":19,"k12":{"domains":201,"spf":58.7,"dmarc":19.4},"he":{"domains":19,"spf":100.0,"dmarc":94.7}},{"code":"SD","name":"South Dakota","k12_entities":188,"he_entities":20,"k12":{"domains":157,"spf":27.4,"dmarc":10.8},"he":{"domains":20,"spf":80.0,"dmarc":80.0}},{"code":"WV","name":"West Virginia","k12_entities":65,"he_entities":32,"k12":{"domains":52,"spf":42.3,"dmarc":7.7},"he":{"domains":32,"spf":87.5,"dmarc":81.2}}];
+const HE = [{"code":"TN","name":"Tennessee","k12_entities":148,"he_entities":67,"k12":{"domains":144,"spf":72.9,"dmarc":27.8},"he":{"domains":65,"spf":95.4,"dmarc":96.9}},{"code":"NE","name":"Nebraska","k12_entities":280,"he_entities":31,"k12":{"domains":57,"spf":47.4,"dmarc":38.6},"he":{"domains":31,"spf":90.3,"dmarc":96.8}},{"code":"AL","name":"Alabama","k12_entities":157,"he_entities":58,"k12":{"domains":151,"spf":77.5,"dmarc":38.4},"he":{"domains":57,"spf":98.2,"dmarc":96.5}},{"code":"MD","name":"Maryland","k12_entities":26,"he_entities":49,"k12":{"domains":26,"spf":84.6,"dmarc":65.4},"he":{"domains":49,"spf":100.0,"dmarc":95.9}},{"code":"ND","name":"North Dakota","k12_entities":233,"he_entities":19,"k12":{"domains":201,"spf":58.7,"dmarc":19.4},"he":{"domains":19,"spf":100.0,"dmarc":94.7}},{"code":"IN","name":"Indiana","k12_entities":444,"he_entities":58,"k12":{"domains":383,"spf":86.2,"dmarc":60.1},"he":{"domains":55,"spf":96.4,"dmarc":94.5}},{"code":"MS","name":"Mississippi","k12_entities":161,"he_entities":32,"k12":{"domains":44,"spf":77.3,"dmarc":34.1},"he":{"domains":32,"spf":100.0,"dmarc":93.8}},{"code":"VT","name":"Vermont","k12_entities":183,"he_entities":16,"k12":{"domains":81,"spf":64.2,"dmarc":38.3},"he":{"domains":16,"spf":93.8,"dmarc":93.8}},{"code":"GA","name":"Georgia","k12_entities":245,"he_entities":87,"k12":{"domains":172,"spf":70.3,"dmarc":33.7},"he":{"domains":87,"spf":97.7,"dmarc":93.1}},{"code":"MA","name":"Massachusetts","k12_entities":428,"he_entities":105,"k12":{"domains":416,"spf":87.7,"dmarc":57.5},"he":{"domains":102,"spf":96.1,"dmarc":93.1}},{"code":"ME","name":"Maine","k12_entities":281,"he_entities":29,"k12":{"domains":155,"spf":70.3,"dmarc":48.4},"he":{"domains":28,"spf":89.3,"dmarc":92.9}},{"code":"CO","name":"Colorado","k12_entities":272,"he_entities":39,"k12":{"domains":206,"spf":81.6,"dmarc":51.9},"he":{"domains":39,"spf":92.3,"dmarc":92.3}},{"code":"IA","name":"Iowa","k12_entities":339,"he_entities":52,"k12":{"domains":327,"spf":84.7,"dmarc":61.8},"he":{"domains":52,"spf":92.3,"dmarc":92.3}},{"code":"ID","name":"Idaho","k12_entities":192,"he_entities":14,"k12":{"domains":3,"spf":66.7,"dmarc":0.0},"he":{"domains":13,"spf":100.0,"dmarc":92.3}},{"code":"MI","name":"Michigan","k12_entities":903,"he_entities":85,"k12":{"domains":816,"spf":74.8,"dmarc":54.0},"he":{"domains":85,"spf":95.3,"dmarc":91.8}},{"code":"TX","name":"Texas","k12_entities":1245,"he_entities":189,"k12":{"domains":1229,"spf":87.8,"dmarc":67.2},"he":{"domains":147,"spf":96.6,"dmarc":91.8}},{"code":"IL","name":"Illinois","k12_entities":1035,"he_entities":139,"k12":{"domains":837,"spf":81.7,"dmarc":46.7},"he":{"domains":130,"spf":96.9,"dmarc":91.5}},{"code":"OR","name":"Oregon","k12_entities":223,"he_entities":49,"k12":{"domains":209,"spf":91.9,"dmarc":67.5},"he":{"domains":45,"spf":93.3,"dmarc":91.1}},{"code":"FL","name":"Florida","k12_entities":83,"he_entities":74,"k12":{"domains":12,"spf":50.0,"dmarc":33.3},"he":{"domains":33,"spf":93.9,"dmarc":90.9}},{"code":"WI","name":"Wisconsin","k12_entities":473,"he_entities":64,"k12":{"domains":461,"spf":88.7,"dmarc":66.4},"he":{"domains":61,"spf":95.1,"dmarc":90.2}},{"code":"MO","name":"Missouri","k12_entities":567,"he_entities":81,"k12":{"domains":546,"spf":78.4,"dmarc":51.1},"he":{"domains":78,"spf":97.4,"dmarc":89.7}},{"code":"NC","name":"North Carolina","k12_entities":376,"he_entities":125,"k12":{"domains":279,"spf":65.9,"dmarc":39.1},"he":{"domains":125,"spf":98.4,"dmarc":89.6}},{"code":"SC","name":"South Carolina","k12_entities":105,"he_entities":58,"k12":{"domains":55,"spf":81.8,"dmarc":40.0},"he":{"domains":54,"spf":87.0,"dmarc":88.9}},{"code":"VA","name":"Virginia","k12_entities":213,"he_entities":82,"k12":{"domains":162,"spf":79.6,"dmarc":56.2},"he":{"domains":81,"spf":90.1,"dmarc":88.9}},{"code":"PA","name":"Pennsylvania","k12_entities":792,"he_entities":158,"k12":{"domains":696,"spf":88.1,"dmarc":58.8},"he":{"domains":157,"spf":94.3,"dmarc":88.5}},{"code":"AZ","name":"Arizona","k12_entities":770,"he_entities":39,"k12":{"domains":538,"spf":72.5,"dmarc":44.8},"he":{"domains":34,"spf":91.2,"dmarc":88.2}},{"code":"AR","name":"Arkansas","k12_entities":377,"he_entities":61,"k12":{"domains":263,"spf":73.8,"dmarc":46.0},"he":{"domains":56,"spf":96.4,"dmarc":87.5}},{"code":"KS","name":"Kansas","k12_entities":339,"he_entities":57,"k12":{"domains":324,"spf":80.2,"dmarc":38.6},"he":{"domains":55,"spf":96.4,"dmarc":87.3}},{"code":"MN","name":"Minnesota","k12_entities":614,"he_entities":111,"k12":{"domains":562,"spf":80.2,"dmarc":48.6},"he":{"domains":89,"spf":93.3,"dmarc":86.5}},{"code":"CA","name":"California","k12_entities":926,"he_entities":226,"k12":{"domains":898,"spf":74.1,"dmarc":43.2},"he":{"domains":173,"spf":79.8,"dmarc":86.1}},{"code":"DC","name":"District of Columbia","k12_entities":70,"he_entities":15,"k12":{"domains":69,"spf":82.6,"dmarc":62.3},"he":{"domains":14,"spf":100.0,"dmarc":85.7}},{"code":"UT","name":"Utah","k12_entities":163,"he_entities":16,"k12":{"domains":150,"spf":73.3,"dmarc":50.7},"he":{"domains":13,"spf":100.0,"dmarc":84.6}},{"code":"WA","name":"Washington","k12_entities":348,"he_entities":67,"k12":{"domains":250,"spf":86.8,"dmarc":62.0},"he":{"domains":65,"spf":92.3,"dmarc":84.6}},{"code":"OH","name":"Ohio","k12_entities":1058,"he_entities":135,"k12":{"domains":922,"spf":72.3,"dmarc":44.5},"he":{"domains":121,"spf":88.4,"dmarc":83.5}},{"code":"LA","name":"Louisiana","k12_entities":118,"he_entities":76,"k12":{"domains":16,"spf":62.5,"dmarc":31.2},"he":{"domains":58,"spf":94.8,"dmarc":82.8}},{"code":"NV","name":"Nevada","k12_entities":22,"he_entities":11,"k12":{"domains":18,"spf":77.8,"dmarc":50.0},"he":{"domains":11,"spf":100.0,"dmarc":81.8}},{"code":"WV","name":"West Virginia","k12_entities":65,"he_entities":32,"k12":{"domains":52,"spf":42.3,"dmarc":7.7},"he":{"domains":32,"spf":87.5,"dmarc":81.2}},{"code":"SD","name":"South Dakota","k12_entities":188,"he_entities":20,"k12":{"domains":157,"spf":27.4,"dmarc":10.8},"he":{"domains":20,"spf":80.0,"dmarc":80.0}},{"code":"RI","name":"Rhode Island","k12_entities":68,"he_entities":14,"k12":{"domains":44,"spf":75.0,"dmarc":43.2},"he":{"domains":14,"spf":57.1,"dmarc":78.6}},{"code":"MT","name":"Montana","k12_entities":489,"he_entities":24,"k12":{"domains":291,"spf":71.8,"dmarc":41.2},"he":{"domains":23,"spf":91.3,"dmarc":78.3}},{"code":"NY","name":"New York","k12_entities":1111,"he_entities":276,"k12":{"domains":924,"spf":86.1,"dmarc":67.3},"he":{"domains":274,"spf":81.4,"dmarc":71.9}},{"code":"OK","name":"Oklahoma","k12_entities":579,"he_entities":49,"k12":{"domains":535,"spf":75.7,"dmarc":32.9},"he":{"domains":49,"spf":77.6,"dmarc":71.4}},{"code":"KY","name":"Kentucky","k12_entities":185,"he_entities":50,"k12":{"domains":176,"spf":67.6,"dmarc":42.0},"he":{"domains":50,"spf":68.0,"dmarc":68.0}},{"code":"NM","name":"New Mexico","k12_entities":194,"he_entities":31,"k12":{"domains":102,"spf":78.4,"dmarc":42.2},"he":{"domains":31,"spf":74.2,"dmarc":67.7}},{"code":"NJ","name":"New Jersey","k12_entities":700,"he_entities":76,"k12":{"domains":661,"spf":86.5,"dmarc":61.4},"he":{"domains":74,"spf":73.0,"dmarc":66.2}},{"code":"CT","name":"Connecticut","k12_entities":209,"he_entities":40,"k12":{"domains":195,"spf":86.2,"dmarc":61.0},"he":{"domains":40,"spf":62.5,"dmarc":57.5}},{"code":"NH","name":"New Hampshire","k12_entities":320,"he_entities":24,"k12":{"domains":85,"spf":78.8,"dmarc":45.9},"he":{"domains":24,"spf":87.5,"dmarc":50.0}},{"code":"HI","name":"Hawaii","k12_entities":0,"he_entities":14,"k12":{"domains":0,"spf":0.0,"dmarc":0.0},"he":{"domains":14,"spf":35.7,"dmarc":28.6}}];
+const PROXY = [{"type":"authority","total_with_mx":1,"proxied_count":1,"proxied_pct":100.0},{"type":"county","total_with_mx":2108,"proxied_count":545,"proxied_pct":25.9},{"type":"higher_ed","total_with_mx":2767,"proxied_count":564,"proxied_pct":20.4},{"type":"state_agency","total_with_mx":122,"proxied_count":24,"proxied_pct":19.7},{"type":"municipality","total_with_mx":8338,"proxied_count":1546,"proxied_pct":18.5},{"type":"township","total_with_mx":1646,"proxied_count":303,"proxied_pct":18.4},{"type":"special_district","total_with_mx":2627,"proxied_count":345,"proxied_pct":13.1},{"type":"k12","total_with_mx":12607,"proxied_count":1033,"proxied_pct":8.2}];
+
+// K-12 vs Higher Ed comparison
+new Chart(document.getElementById('chart-compare').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Domain Coverage', 'Avg SPF', 'Avg DMARC', 'Gateway Adoption'],
+    datasets: [
+      { label: 'K-12', data: [86.3, 74.6, 46.7, 8.2], backgroundColor: '#fbbf24' },
+      { label: 'Higher Ed', data: [98.2, 89.3, 84.4, 20.4], backgroundColor: '#a78bfa' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8' } } },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+      y: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// Gateway adoption by entity type
+new Chart(document.getElementById('chart-proxy').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: PROXY.map(p => p.type.replace(/_/g, ' ')),
+    datasets: [{
+      label: 'Gateway Adoption %',
+      data: PROXY.map(p => p.proxied_pct),
+      backgroundColor: PROXY.map(p => p.type === 'k12' ? '#f87171' : '#475569'),
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { beginAtZero: true, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+      y: { ticks: { color: '#94a3b8', font: { size: 12 } }, grid: { display: false } }
+    }
+  }
+});
+
+// K-12 top/bottom 10
+const k12Top = K12.slice(0, 10);
+const k12Bot = [...K12].slice(-10).reverse();
+
+function hbar(canvasId, data, color) {
+  new Chart(document.getElementById(canvasId).getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: data.map(s => s.code),
+      datasets: [{ data: data.map(s => s.k12 ? s.k12.dmarc : s.he.dmarc), backgroundColor: color, borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+        y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+hbar('chart-k12-top', k12Top, '#4ade80');
+hbar('chart-k12-bottom', k12Bot, '#f87171');
+
+// Higher Ed top/bottom 10 — use he.dmarc
+const heTop = HE.slice(0, 10);
+const heBot = [...HE].slice(-10).reverse();
+
+function hbarHE(canvasId, data, color) {
+  new Chart(document.getElementById(canvasId).getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: data.map(s => s.code),
+      datasets: [{ data: data.map(s => s.he.dmarc), backgroundColor: color, borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+        y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+hbarHE('chart-he-top', heTop, '#a78bfa');
+hbarHE('chart-he-bottom', heBot, '#f87171');
+
+// Scatter: K-12 SPF vs DMARC by state
+const bubbleData = K12.map(s => ({
+  x: s.k12.spf, y: s.k12.dmarc,
+  r: Math.max(4, Math.min(20, Math.sqrt(s.k12.domains) * 0.5)),
+  label: s.code
+}));
+new Chart(document.getElementById('chart-scatter').getContext('2d'), {
+  type: 'bubble',
+  data: {
+    datasets: [{
+      data: bubbleData,
+      backgroundColor: bubbleData.map(b => {
+        if (b.y >= 60) return 'rgba(74,222,128,0.5)';
+        if (b.y >= 45) return 'rgba(251,191,36,0.5)';
+        return 'rgba(248,113,113,0.5)';
+      }),
+      borderColor: bubbleData.map(b => {
+        if (b.y >= 60) return '#4ade80';
+        if (b.y >= 45) return '#fbbf24';
+        return '#f87171';
+      }),
+      borderWidth: 1,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const s = K12[ctx.dataIndex];
+            return `${s.name || s.code}: SPF ${s.k12.spf}%, DMARC ${s.k12.dmarc}%, ${s.k12.domains} domains`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { title: { display: true, text: 'K-12 SPF Adoption %', color: '#94a3b8' }, min: 20, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } },
+      y: { title: { display: true, text: 'K-12 DMARC Adoption %', color: '#94a3b8' }, min: 0, max: 80, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// Full K-12 table
+let tHtml = '';
+K12.forEach((s, i) => {
+  const bc = s.k12.dmarc >= 60 ? 'bar-green' : s.k12.dmarc >= 40 ? 'bar-yellow' : 'bar-red';
+  tHtml += `<tr><td>${i+1}</td><td><strong>${s.code}</strong> ${s.name}</td><td class="num">${fmt(s.k12_entities)}</td><td class="num">${fmt(s.k12.domains)}</td><td class="num">${s.k12.spf}%</td><td class="num">${s.k12.dmarc}%</td><td class="bar-cell"><div class="bar-bg"><div class="bar-fill ${bc}" style="width:${s.k12.dmarc}%"></div></div></td></tr>`;
+});
+document.getElementById('table-k12').innerHTML = tHtml;
+
+</script>
+</body>
+</html>
