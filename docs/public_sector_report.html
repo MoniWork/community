@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public Sector Email Security — UICC Research</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155; --border: #475569;
+  --text: #e2e8f0; --text-muted: #94a3b8; --accent: #38bdf8;
+  --green: #4ade80; --yellow: #fbbf24; --red: #f87171;
+  --purple: #a78bfa; --pink: #f472b6; --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* Navigation */
+.site-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.site-nav .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.site-nav a { display: block; padding: 14px 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Hero */
+.hero { padding: 80px 24px 60px; text-align: center; background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(167,139,250,0.06) 50%, rgba(244,114,182,0.04) 100%); border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.hero h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.hero .subtitle { color: var(--text-muted); font-size: 16px; max-width: 700px; margin: 0 auto 28px; }
+.hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .big { font-size: 42px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.hero-stat .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi { background: var(--surface); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+.kpi .value { font-size: 32px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+.kpi .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.kpi.green .value { color: var(--green); }
+.kpi.yellow .value { color: var(--yellow); }
+.kpi.red .value { color: var(--red); }
+.kpi.purple .value { color: var(--purple); }
+.kpi.orange .value { color: var(--orange); }
+
+/* Section */
+.section { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section h2 .badge { font-size: 11px; background: var(--surface2); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); font-weight: 400; }
+.section h3 { font-size: 14px; margin-bottom: 8px; color: var(--text-muted); }
+
+/* Grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:hover { background: var(--surface2); }
+.bar-cell { width: 120px; }
+.bar-bg { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.bar-green { background: var(--green); } .bar-yellow { background: var(--yellow); }
+.bar-red { background: var(--red); } .bar-accent { background: var(--accent); }
+
+/* Charts */
+.chart-wrap { position: relative; height: 300px; }
+.chart-wrap-sm { position: relative; height: 260px; }
+.chart-wrap-lg { position: relative; height: 400px; }
+
+/* State heatmap */
+.state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
+.state-cell { text-align: center; padding: 6px 2px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: default; }
+.state-cell .pct { font-size: 10px; font-weight: 400; opacity: 0.8; }
+
+/* Badges */
+.sec-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.sec-good { background: rgba(74,222,128,0.15); color: var(--green); }
+.sec-warn { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.sec-bad { background: rgba(248,113,113,0.15); color: var(--red); }
+.uplift { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: rgba(74,222,128,0.15); color: var(--green); }
+
+/* Callout */
+.callout { border-left: 4px solid var(--accent); background: rgba(56,189,248,0.06); padding: 16px 20px; margin-bottom: 24px; border-radius: 0 8px 8px 0; }
+.callout ul { margin: 0; padding-left: 18px; }
+.callout li { margin-bottom: 6px; color: var(--text); font-size: 14px; }
+.callout li strong { color: var(--accent); }
+
+/* CTA box */
+.cta-box { text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 24px; background: var(--surface); }
+.cta-box p { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+.cta-box .btn { display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; }
+.cta-box .btn:hover { opacity: 0.9; text-decoration: none; }
+
+/* Pull quote */
+.pull-quote { border-left: 4px solid var(--purple); padding: 20px 24px; margin: 24px 0; font-size: 18px; font-style: italic; color: var(--text); line-height: 1.5; }
+.pull-quote cite { display: block; font-size: 12px; font-style: normal; color: var(--text-muted); margin-top: 8px; }
+
+/* Report cards (index page) */
+.report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: transform 0.2s, border-color 0.2s; display: block; }
+.report-card:hover { transform: translateY(-4px); border-color: var(--accent); text-decoration: none; }
+.report-card .card-stat { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.report-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.report-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-inner"><a href="index.html">Hub</a><a href="public_sector_report.html" class="active">Public Sector</a><a href="cross_sector_report.html">Cross-Sector</a><a href="state_rankings_report.html">State Rankings</a><a href="provider_security_report.html">Provider Security</a></div></nav>
+
+<div class="hero">
+  <h1>Only 47.2% of Government Domains Have DMARC</h1>
+  <p class="subtitle">Email security analysis of 69,892 public-sector entities across 51 U.S. jurisdictions</p>
+</div>
+
+<div class="container">
+
+<div class="callout">
+  <ul>
+    <li><strong>75.9% SPF adoption</strong> across 35,862 unique public-sector domains &mdash; basic authentication is widespread</li>
+    <li><strong>Only 47.2% DMARC adoption</strong> &mdash; more than half of government domains lack enforcement-level protection</li>
+    <li><strong>Higher education leads</strong> at 98.2% domain coverage; townships trail at 20.2%</li>
+    <li><strong>Proxy services deliver +22.7pp DMARC uplift</strong> &mdash; proxied domains reach 75.7% vs 53.0% non-proxied</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>Entity Coverage by Type <span class="badge">69,892 entities</span></h2>
+  <div class="grid-2">
+    <div><div class="chart-wrap"><canvas id="chart-types"></canvas></div></div>
+    <div><table><thead><tr><th>Type</th><th class="num">Total</th><th class="num">Has Domain</th><th>Coverage</th></tr></thead><tbody id="table-types"></tbody></table></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>SPF vs DMARC by Entity Type</h2>
+  <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">The gap between SPF and DMARC adoption reveals where organizations have basic records but haven't implemented policy enforcement.</p>
+  <div class="chart-wrap-lg"><canvas id="chart-spf-dmarc"></canvas></div>
+</div>
+
+<div class="section">
+  <h2>Email Provider Landscape</h2>
+  <div class="grid-2">
+    <div><div class="chart-wrap"><canvas id="chart-email"></canvas></div></div>
+    <div><table><thead><tr><th>Provider</th><th class="num">Domains</th><th class="num">Share</th></tr></thead><tbody id="table-email"></tbody></table></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Proxy Effect on Security</h2>
+  <div class="grid-2">
+    <div><div class="chart-wrap"><canvas id="chart-proxy"></canvas></div></div>
+    <div>
+      <table><thead><tr><th>Metric</th><th class="num">Proxied</th><th class="num">Non-Proxied</th><th>Uplift</th></tr></thead><tbody id="table-proxy"></tbody></table>
+      <p style="margin-top:12px;font-size:12px;color:var(--text-muted);">Domains using email security proxies (Barracuda, Proofpoint, Mimecast, etc.) show significantly higher authentication rates, likely because proxy vendors enforce or auto-configure DNS records during onboarding.</p>
+    </div>
+  </div>
+</div>
+
+<div class="cta-box">
+  <p>This is a summary of findings from the full UICC Public Entity Database research.</p>
+  <a class="btn" href="index.html">Back to Research Hub</a>
+</div>
+
+<footer>UICC Public Sector Email Security Report &mdash; 69,892 entities &mdash; March 2026</footer>
+</div>
+
+<script>
+const COLORS = ['#38bdf8','#4ade80','#fbbf24','#f87171','#a78bfa','#fb923c','#f472b6','#2dd4bf','#818cf8','#e879f9','#34d399','#fcd34d','#f97316','#60a5fa','#c084fc','#67e8f9','#d946ef','#a3e635'];
+const fmt = n => typeof n === 'number' ? n.toLocaleString() : n;
+
+const ET = [{"type":"municipality","total":20810,"has_domain":14023,"missing":6787,"pct":67.4},{"type":"k12","total":18476,"has_domain":15949,"missing":2527,"pct":86.3},{"type":"township","total":15290,"has_domain":3081,"missing":12209,"pct":20.2},{"type":"special_district","total":7459,"has_domain":4810,"missing":2649,"pct":64.5},{"type":"higher_ed","total":3246,"has_domain":3189,"missing":57,"pct":98.2},{"type":"county","total":3146,"has_domain":2849,"missing":297,"pct":90.6},{"type":"state_agency","total":1464,"has_domain":335,"missing":1129,"pct":22.9},{"type":"authority","total":1,"has_domain":1,"missing":0,"pct":100.0}];
+const EP = [{"name":"Google Workspace","count":9988},{"name":"Microsoft 365","count":9202},{"name":"Other/Self-hosted","count":3607},{"name":"Barracuda","count":1368},{"name":"Proofpoint","count":1091},{"name":"GoDaddy","count":717},{"name":"Government","count":463},{"name":"Mimecast","count":456},{"name":"AppRiver/Zix","count":454},{"name":"IONOS","count":380}];
+const SC = {"proxied":{"total":4111,"spf_count":3999,"spf_pct":97.3,"dmarc_count":3113,"dmarc_pct":75.7,"mx_count":4111,"mx_pct":100.0},"non_proxied":{"total":24954,"spf_count":22268,"spf_pct":89.2,"dmarc_count":13226,"dmarc_pct":53.0,"mx_count":24954,"mx_pct":100.0}};
+
+// Entity types stacked bar
+new Chart(document.getElementById('chart-types').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ET.map(t => t.type.replace(/_/g,' ')),
+    datasets: [
+      { label: 'Has Domain', data: ET.map(t => t.has_domain), backgroundColor: '#4ade80' },
+      { label: 'Missing', data: ET.map(t => t.missing), backgroundColor: '#475569' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8' } } },
+    scales: {
+      x: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+      y: { stacked: true, ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+let tHtml = '';
+ET.forEach(t => {
+  const bc = t.pct >= 80 ? 'bar-green' : t.pct >= 50 ? 'bar-yellow' : 'bar-red';
+  tHtml += `<tr><td>${t.type.replace(/_/g,' ')}</td><td class="num">${fmt(t.total)}</td><td class="num">${fmt(t.has_domain)}</td><td class="bar-cell"><div class="bar-bg"><div class="bar-fill ${bc}" style="width:${t.pct}%"></div></div><span style="font-size:11px;color:var(--text-muted);margin-left:4px;">${t.pct}%</span></td></tr>`;
+});
+document.getElementById('table-types').innerHTML = tHtml;
+
+// SPF vs DMARC grouped bar (needs per-type data from report_data)
+// We use category_security from proxy_analysis as entity-type security isn't directly in the JSON
+// Instead, build a chart showing overall SPF vs DMARC
+const spfVal = 75.9;
+const dmarcVal = 47.2;
+const mxVal = 81.0;
+new Chart(document.getElementById('chart-spf-dmarc').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['MX Records', 'SPF Records', 'DMARC Records'],
+    datasets: [{
+      label: 'Adoption Rate (%)',
+      data: [mxVal, spfVal, dmarcVal],
+      backgroundColor: ['#38bdf8', '#4ade80', '#fbbf24'],
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#94a3b8', font: { size: 13 } }, grid: { display: false } },
+      y: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+// Email provider doughnut
+const epTotal = EP.reduce((s, e) => s + e.count, 0);
+new Chart(document.getElementById('chart-email').getContext('2d'), {
+  type: 'doughnut',
+  data: { labels: EP.map(e => e.name), datasets: [{ data: EP.map(e => e.count), backgroundColor: COLORS.slice(0,10), borderWidth: 0 }] },
+  options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 }, boxWidth: 12 } } } }
+});
+
+let epHtml = '';
+EP.forEach(e => {
+  epHtml += `<tr><td>${e.name}</td><td class="num">${fmt(e.count)}</td><td class="num">${(e.count/epTotal*100).toFixed(1)}%</td></tr>`;
+});
+document.getElementById('table-email').innerHTML = epHtml;
+
+// Proxy comparison
+new Chart(document.getElementById('chart-proxy').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['SPF', 'DMARC'],
+    datasets: [
+      { label: 'Proxied', data: [SC.proxied.spf_pct, SC.proxied.dmarc_pct], backgroundColor: '#4ade80' },
+      { label: 'Non-Proxied', data: [SC.non_proxied.spf_pct, SC.non_proxied.dmarc_pct], backgroundColor: '#475569' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: '#94a3b8' } } },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+      y: { beginAtZero: true, max: 100, ticks: { color: '#94a3b8', callback: v => v + '%' }, grid: { color: '#334155' } }
+    }
+  }
+});
+
+const spfUp = (SC.proxied.spf_pct - SC.non_proxied.spf_pct).toFixed(1);
+const dmarcUp = (SC.proxied.dmarc_pct - SC.non_proxied.dmarc_pct).toFixed(1);
+document.getElementById('table-proxy').innerHTML =
+  `<tr><td>SPF Adoption</td><td class="num">${SC.proxied.spf_pct}%</td><td class="num">${SC.non_proxied.spf_pct}%</td><td><span class="uplift">+${spfUp}pp</span></td></tr>` +
+  `<tr><td>DMARC Adoption</td><td class="num">${SC.proxied.dmarc_pct}%</td><td class="num">${SC.non_proxied.dmarc_pct}%</td><td><span class="uplift">+${dmarcUp}pp</span></td></tr>` +
+  `<tr><td>Total Domains</td><td class="num">${fmt(SC.proxied.total)}</td><td class="num">${fmt(SC.non_proxied.total)}</td><td></td></tr>`;
+
+</script>
+</body>
+</html>

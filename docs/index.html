@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UICC Research Intelligence Hub</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155; --border: #475569;
+  --text: #e2e8f0; --text-muted: #94a3b8; --accent: #38bdf8;
+  --green: #4ade80; --yellow: #fbbf24; --red: #f87171;
+  --purple: #a78bfa; --pink: #f472b6; --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+/* Navigation */
+.site-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.site-nav .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.site-nav a { display: block; padding: 14px 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Hero */
+.hero { padding: 80px 24px 60px; text-align: center; background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(167,139,250,0.06) 50%, rgba(244,114,182,0.04) 100%); border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.hero h1 { font-size: 36px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.hero .subtitle { color: var(--text-muted); font-size: 16px; max-width: 700px; margin: 0 auto 28px; }
+.hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .big { font-size: 42px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.hero-stat .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+/* KPI row */
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+.kpi { background: var(--surface); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+.kpi .value { font-size: 32px; font-weight: 700; color: var(--accent); line-height: 1.2; }
+.kpi .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+.kpi.green .value { color: var(--green); }
+.kpi.yellow .value { color: var(--yellow); }
+.kpi.red .value { color: var(--red); }
+.kpi.purple .value { color: var(--purple); }
+.kpi.orange .value { color: var(--orange); }
+
+/* Section */
+.section { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section h2 .badge { font-size: 11px; background: var(--surface2); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); font-weight: 400; }
+.section h3 { font-size: 14px; margin-bottom: 8px; color: var(--text-muted); }
+
+/* Grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+@media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:hover { background: var(--surface2); }
+.bar-cell { width: 120px; }
+.bar-bg { background: var(--surface2); border-radius: 4px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.bar-green { background: var(--green); } .bar-yellow { background: var(--yellow); }
+.bar-red { background: var(--red); } .bar-accent { background: var(--accent); }
+
+/* Charts */
+.chart-wrap { position: relative; height: 300px; }
+.chart-wrap-sm { position: relative; height: 260px; }
+.chart-wrap-lg { position: relative; height: 400px; }
+
+/* State heatmap */
+.state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
+.state-cell { text-align: center; padding: 6px 2px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: default; }
+.state-cell .pct { font-size: 10px; font-weight: 400; opacity: 0.8; }
+
+/* Badges */
+.sec-badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.sec-good { background: rgba(74,222,128,0.15); color: var(--green); }
+.sec-warn { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.sec-bad { background: rgba(248,113,113,0.15); color: var(--red); }
+.uplift { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: rgba(74,222,128,0.15); color: var(--green); }
+
+/* Callout */
+.callout { border-left: 4px solid var(--accent); background: rgba(56,189,248,0.06); padding: 16px 20px; margin-bottom: 24px; border-radius: 0 8px 8px 0; }
+.callout ul { margin: 0; padding-left: 18px; }
+.callout li { margin-bottom: 6px; color: var(--text); font-size: 14px; }
+.callout li strong { color: var(--accent); }
+
+/* CTA box */
+.cta-box { text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-top: 24px; background: var(--surface); }
+.cta-box p { color: var(--text-muted); font-size: 13px; margin-bottom: 12px; }
+.cta-box .btn { display: inline-block; padding: 10px 24px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 14px; }
+.cta-box .btn:hover { opacity: 0.9; text-decoration: none; }
+
+/* Pull quote */
+.pull-quote { border-left: 4px solid var(--purple); padding: 20px 24px; margin: 24px 0; font-size: 18px; font-style: italic; color: var(--text); line-height: 1.5; }
+.pull-quote cite { display: block; font-size: 12px; font-style: normal; color: var(--text-muted); margin-top: 8px; }
+
+/* Report cards (index page) */
+.report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; transition: transform 0.2s, border-color 0.2s; display: block; }
+.report-card:hover { transform: translateY(-4px); border-color: var(--accent); text-decoration: none; }
+.report-card .card-stat { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.report-card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.report-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<nav class="site-nav"><div class="nav-inner"><a href="index.html" class="active">Hub</a><a href="public_sector_report.html">Public Sector</a><a href="cross_sector_report.html">Cross-Sector</a><a href="state_rankings_report.html">State Rankings</a><a href="provider_security_report.html">Provider Security</a></div></nav>
+
+<div class="hero">
+  <h1>U.S. Domain &amp; Email Security Intelligence</h1>
+  <p class="subtitle">Comprehensive analysis of email authentication, provider infrastructure, and security posture across public, private, and nonprofit sectors</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="big">406,680</div><div class="label">Domains Analyzed</div></div>
+    <div class="hero-stat"><div class="big">69,892</div><div class="label">Public Entities</div></div>
+    <div class="hero-stat"><div class="big">51</div><div class="label">Jurisdictions</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="grid-4" style="margin-bottom:32px;">
+  <a class="report-card" href="public_sector_report.html">
+    <div class="card-stat">47.2%</div>
+    <h3>Public Sector Email Security</h3>
+    <p>Only 47.2% of government domains have DMARC. Analysis of 69,892 entities across 8 entity types.</p>
+  </a>
+  <a class="report-card" href="cross_sector_report.html">
+    <div class="card-stat">406,680</div>
+    <h3>Cross-Sector DNS Comparison</h3>
+    <p>How do small businesses, nonprofits, and government compare on email authentication? 406K domains, 3 sources.</p>
+  </a>
+  <a class="report-card" href="state_rankings_report.html">
+    <div class="card-stat">51</div>
+    <h3>51-Jurisdiction Rankings</h3>
+    <p>DMARC adoption ranges widely across U.S. states. See who leads and who lags.</p>
+  </a>
+  <a class="report-card" href="provider_security_report.html">
+    <div class="card-stat">+22.7pp</div>
+    <h3>Provider &amp; Gateway Intelligence</h3>
+    <p>Email infrastructure choice predicts security posture. Proxy services deliver +22.7pp DMARC uplift.</p>
+  </a>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="value">406,680</div><div class="label">Total Domains</div></div>
+  <div class="kpi green"><div class="value">85.1%</div><div class="label">SPF Adoption</div></div>
+  <div class="kpi yellow"><div class="value">51.0%</div><div class="label">DMARC Adoption</div></div>
+  <div class="kpi orange"><div class="value">14.2%</div><div class="label">Proxy Rate</div></div>
+  <div class="kpi purple"><div class="value">30.1%</div><div class="label">Google Workspace</div></div>
+  <div class="kpi"><div class="value">37.1%</div><div class="label">Microsoft 365</div></div>
+</div>
+
+<div class="section">
+  <h2>Methodology</h2>
+  <p style="color:var(--text-muted);font-size:14px;line-height:1.7;">
+    This research combines three primary data sources: the <strong>UICC Public Entity Database</strong> (35,855 domains from 51 state registries),
+    <strong>SAM.gov Entity Registration</strong> (375,124 domains from federal contractor/grantee registrations),
+    and a <strong>Small Business</strong> dataset (10,935 domains).
+    After deduplication, 406,680 unique domains were analyzed via DNS resolution, MX record lookup,
+    SPF/DMARC record parsing, and email provider classification. All data collected March 2026.
+  </p>
+</div>
+
+<footer>UICC Research Intelligence &mdash; 406,680 domains across 51 jurisdictions &mdash; March 2026</footer>
+</div>
+
+<script>
+const COLORS = ['#38bdf8','#4ade80','#fbbf24','#f87171','#a78bfa','#fb923c','#f472b6','#2dd4bf','#818cf8','#e879f9','#34d399','#fcd34d','#f97316','#60a5fa','#c084fc','#67e8f9','#d946ef','#a3e635'];
+const fmt = n => typeof n === 'number' ? n.toLocaleString() : n;
+
+</script>
+</body>
+</html>
