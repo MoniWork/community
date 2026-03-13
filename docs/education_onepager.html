@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-12 Email Security Intelligence — One-Pager</title>
+<style>
+@page { size: letter; margin: 0.5in; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none; } }
+:root { --blue: #1e40af; --sky: #0284c7; --red: #dc2626; --green: #16a34a; --amber: #d97706; --gray: #475569; --light: #f8fafc; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: #1e293b; line-height: 1.5; max-width: 8.5in; margin: 0 auto; padding: 0.5in; background: white; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--blue); padding-bottom: 12px; margin-bottom: 16px; }
+.header h1 { font-size: 20px; color: var(--blue); line-height: 1.2; }
+.header .meta { text-align: right; font-size: 10px; color: var(--gray); }
+.header .meta strong { color: var(--blue); font-size: 11px; }
+
+.hero-line { font-size: 15px; font-weight: 600; color: var(--red); margin-bottom: 12px; padding: 8px 12px; background: #fef2f2; border-left: 4px solid var(--red); border-radius: 0 4px 4px 0; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
+.kpi { text-align: center; padding: 10px 4px; background: var(--light); border-radius: 6px; border: 1px solid #e2e8f0; }
+.kpi .val { font-size: 22px; font-weight: 700; color: var(--blue); line-height: 1.1; }
+.kpi .val.red { color: var(--red); }
+.kpi .val.green { color: var(--green); }
+.kpi .val.amber { color: var(--amber); }
+.kpi .lbl { font-size: 8px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.section { margin-bottom: 14px; }
+.section h2 { font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #cbd5e1; }
+
+table { width: 100%; border-collapse: collapse; font-size: 10px; }
+th { text-align: left; font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 6px; border-bottom: 1px solid #cbd5e1; }
+td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:nth-child(even) { background: #f8fafc; }
+.highlight-row { background: #eff6ff !important; font-weight: 600; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 600; }
+.badge-red { background: #fef2f2; color: var(--red); }
+.badge-green { background: #f0fdf4; color: var(--green); }
+.badge-amber { background: #fffbeb; color: var(--amber); }
+
+.insight-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+.insight-box p { font-size: 11px; color: #1e3a5f; margin-bottom: 4px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--blue); }
+
+.bar-inline { display: inline-block; height: 10px; border-radius: 3px; vertical-align: middle; }
+
+.footer { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 12px; font-size: 9px; color: var(--gray); display: flex; justify-content: space-between; }
+
+.print-btn { position: fixed; top: 16px; right: 16px; background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.print-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+<div class="header">
+  <div>
+    <h1>K-12 &amp; Education Email Security Intelligence</h1>
+    <div style="font-size:11px;color:var(--gray);margin-top:2px;">U.S. Public Sector DNS &amp; Email Authentication Analysis</div>
+  </div>
+  <div class="meta">
+    <strong>UICC Research</strong><br>
+    March 2026<br>
+    51 Jurisdictions &bull; 69,892 Entities
+  </div>
+</div>
+
+<div class="hero-line">
+  K-12 school districts have the lowest email security gateway adoption (8.2%) of any public-sector entity type &mdash; 2.5x lower than higher education (20.4%)
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="val">18,476</div><div class="lbl">K-12 Districts</div></div>
+  <div class="kpi"><div class="val">3,246</div><div class="lbl">Higher Ed</div></div>
+  <div class="kpi"><div class="val amber">46.6%</div><div class="lbl">K-12 Avg DMARC</div></div>
+  <div class="kpi"><div class="val green">85.4%</div><div class="lbl">Higher Ed Avg DMARC</div></div>
+  <div class="kpi"><div class="val red">8.2%</div><div class="lbl">K-12 Gateway Rate</div></div>
+  <div class="kpi"><div class="val green">20.4%</div><div class="lbl">Higher Ed Gateway Rate</div></div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Gateway Adoption by Entity Type</h2>
+    <table>
+      <thead><tr><th>Entity Type</th><th class="num">With MX</th><th class="num">Using Gateway</th><th class="num">Rate</th></tr></thead>
+      <tbody>
+        <tr><td>County</td><td class="num">2,108</td><td class="num">545</td><td class="num"><span class="badge badge-green">25.9%</span></td></tr>
+        <tr><td>Higher Education</td><td class="num">2,767</td><td class="num">564</td><td class="num"><span class="badge badge-green">20.4%</span></td></tr>
+        <tr><td>State Agency</td><td class="num">122</td><td class="num">24</td><td class="num"><span class="badge badge-amber">19.7%</span></td></tr>
+        <tr><td>Municipality</td><td class="num">8,338</td><td class="num">1,546</td><td class="num"><span class="badge badge-amber">18.5%</span></td></tr>
+        <tr><td>Township</td><td class="num">1,646</td><td class="num">303</td><td class="num"><span class="badge badge-amber">18.4%</span></td></tr>
+        <tr><td>Special District</td><td class="num">2,627</td><td class="num">345</td><td class="num"><span class="badge badge-amber">13.1%</span></td></tr>
+        <tr class="highlight-row"><td>K-12</td><td class="num">12,607</td><td class="num">1,033</td><td class="num"><span class="badge badge-red">8.2%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Texas Education Spotlight</h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">TX K-12</th><th class="num">TX Higher Ed</th><th class="num">National K-12</th></tr></thead>
+      <tbody>
+        <tr><td>Entities</td><td class="num">1,245</td><td class="num">189</td><td class="num">18,476</td></tr>
+        <tr><td>Domain Coverage</td><td class="num">99.7%</td><td class="num">96.3%</td><td class="num">86.3%</td></tr>
+        <tr><td>SPF Adoption</td><td class="num"><strong>87.8%</strong></td><td class="num">96.6%</td><td class="num">~77%</td></tr>
+        <tr><td>DMARC Adoption</td><td class="num"><strong>67.2%</strong></td><td class="num">91.8%</td><td class="num">~47%</td></tr>
+        <tr><td>SPF-DMARC Gap</td><td class="num">20.6pp</td><td class="num">4.8pp</td><td class="num">~30pp</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--green);font-weight:600;">
+      TX K-12 DMARC is +20pp above the national K-12 average
+    </div>
+  </div>
+</div>
+
+<div class="insight-box">
+  <p><strong>Why this matters for education research:</strong></p>
+  <p>K-12 districts are prime targets for phishing, ransomware, and business email compromise. DMARC enforcement prevents domain spoofing &mdash; yet fewer than half of K-12 districts nationwide have it configured. The data reveals massive state-by-state variation (10.8% to 67.3%), suggesting policy and funding interventions can move the needle.</p>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Top 10 States &mdash; K-12 DMARC</h2>
+    <table>
+      <thead><tr><th>State</th><th class="num">Domains</th><th class="num">SPF</th><th class="num">DMARC</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>TX Texas</td><td class="num">1,229</td><td class="num">87.8%</td><td class="num">67.2%</td></tr>
+        <tr><td>NY New York</td><td class="num">924</td><td class="num">86.1%</td><td class="num">67.3%</td></tr>
+        <tr><td>WI Wisconsin</td><td class="num">461</td><td class="num">88.7%</td><td class="num">66.4%</td></tr>
+        <tr><td>OR Oregon</td><td class="num">209</td><td class="num">91.9%</td><td class="num">67.5%</td></tr>
+        <tr><td>WA Washington</td><td class="num">250</td><td class="num">86.8%</td><td class="num">62.0%</td></tr>
+        <tr><td>IA Iowa</td><td class="num">327</td><td class="num">84.7%</td><td class="num">61.8%</td></tr>
+        <tr><td>DC District of Columbia</td><td class="num">69</td><td class="num">82.6%</td><td class="num">62.3%</td></tr>
+        <tr><td>NJ New Jersey</td><td class="num">661</td><td class="num">86.5%</td><td class="num">61.4%</td></tr>
+        <tr><td>AK Alaska</td><td class="num">54</td><td class="num">83.3%</td><td class="num">61.1%</td></tr>
+        <tr><td>CT Connecticut</td><td class="num">195</td><td class="num">86.2%</td><td class="num">61.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Bottom 10 States &mdash; K-12 DMARC</h2>
+    <table>
+      <thead><tr><th>State</th><th class="num">Domains</th><th class="num">SPF</th><th class="num">DMARC</th></tr></thead>
+      <tbody>
+        <tr><td>WV West Virginia</td><td class="num">52</td><td class="num">42.3%</td><td class="num"><span class="badge badge-red">7.7%</span></td></tr>
+        <tr><td>SD South Dakota</td><td class="num">157</td><td class="num">27.4%</td><td class="num"><span class="badge badge-red">10.8%</span></td></tr>
+        <tr><td>ND North Dakota</td><td class="num">201</td><td class="num">58.7%</td><td class="num"><span class="badge badge-red">19.4%</span></td></tr>
+        <tr><td>TN Tennessee</td><td class="num">144</td><td class="num">72.9%</td><td class="num"><span class="badge badge-red">27.8%</span></td></tr>
+        <tr><td>DE Delaware</td><td class="num">41</td><td class="num">51.2%</td><td class="num"><span class="badge badge-red">31.7%</span></td></tr>
+        <tr><td>LA Louisiana</td><td class="num">16</td><td class="num">62.5%</td><td class="num"><span class="badge badge-red">31.2%</span></td></tr>
+        <tr><td>OK Oklahoma</td><td class="num">535</td><td class="num">75.7%</td><td class="num"><span class="badge badge-red">32.9%</span></td></tr>
+        <tr><td>GA Georgia</td><td class="num">172</td><td class="num">70.3%</td><td class="num"><span class="badge badge-red">33.7%</span></td></tr>
+        <tr><td>FL Florida</td><td class="num">12</td><td class="num">50.0%</td><td class="num"><span class="badge badge-red">33.3%</span></td></tr>
+        <tr><td>MS Mississippi</td><td class="num">44</td><td class="num">77.3%</td><td class="num"><span class="badge badge-red">34.1%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Research Opportunities</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--blue);">
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px;">State Policy Impact</div>
+      <div style="font-size:10px;color:var(--gray);">Why do TX and NY K-12 districts perform 2-3x better than SD and WV? What role do state mandates, funding, and technical assistance play?</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--amber);">
+      <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:3px;">Gateway Adoption Gap</div>
+      <div style="font-size:10px;color:var(--gray);">K-12 has 8.2% gateway adoption vs 20.4% for higher ed. What are the barriers? Cost, technical capacity, or awareness?</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--green);">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">Intervention Design</div>
+      <div style="font-size:10px;color:var(--gray);">Can university-led technical assistance programs close the K-12 security gap? Texas Tech's College of Education is uniquely positioned to lead this research.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div>UICC Research &bull; U.S. Domain &amp; Email Security Intelligence &bull; 406,680 domains analyzed &bull; March 2026</div>
+  <div>Full interactive report: moniwork.github.io/community</div>
+</div>
+
+</body>
+</html>
