@@ -136,7 +136,7 @@ footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-siz
   <a class="report-card" href="cross_sector_report.html">
     <div class="card-stat">406,680</div>
     <h3>Cross-Sector DNS Comparison</h3>
-    <p>How do small businesses, nonprofits, and government compare on email authentication? 406K domains, 3 sources.</p>
+    <p>Large enterprises lead at 75.3% DMARC. SAM-native 6-segment analysis: Large Enterprise, Education, Nonprofit, Government, Small Business &mdash; 406,680 domains.</p>
   </a>
   <a class="report-card" href="state_rankings_report.html">
     <div class="card-stat">51</div>
@@ -167,9 +167,11 @@ footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-siz
 <div class="section">
   <h2>Methodology</h2>
   <p style="color:var(--text-muted);font-size:14px;line-height:1.7;">
-    This research combines three primary data sources: the <strong>UICC Public Entity Database</strong> (35,855 domains from 51 state registries),
+    This research combines three primary data sources: a <strong>Small Business Entity Database</strong> (35,855 domains),
     <strong>SAM.gov Entity Registration</strong> (375,124 domains from federal contractor/grantee registrations),
-    and a <strong>Small Business</strong> dataset (10,935 domains).
+    and a supplemental <strong>Small Business</strong> dataset (10,935 domains).
+    Domains are classified into 6 segments using SAM.gov's native <code>entity_type</code>, <code>business_size</code>, and NAICS fields:
+    Large Enterprise, Education, Nonprofit, Government, Other Business, and Small Business.
     After deduplication, 406,680 unique domains were analyzed via DNS resolution, MX record lookup,
     SPF/DMARC record parsing, and email provider classification. All data collected March 2026.
   </p>
