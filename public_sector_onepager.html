@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public Sector Email Security — One-Pager</title>
+<style>
+@page { size: letter; margin: 0.5in; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none; } }
+:root { --blue: #1e40af; --sky: #0284c7; --red: #dc2626; --green: #16a34a; --amber: #d97706; --gray: #475569; --light: #f8fafc; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: #1e293b; line-height: 1.5; max-width: 8.5in; margin: 0 auto; padding: 0.5in; background: white; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--blue); padding-bottom: 12px; margin-bottom: 16px; }
+.header h1 { font-size: 20px; color: var(--blue); line-height: 1.2; }
+.header .meta { text-align: right; font-size: 10px; color: var(--gray); }
+.header .meta strong { color: var(--blue); font-size: 11px; }
+
+.hero-line { font-size: 15px; font-weight: 600; color: var(--red); margin-bottom: 12px; padding: 8px 12px; background: #fef2f2; border-left: 4px solid var(--red); border-radius: 0 4px 4px 0; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
+.kpi { text-align: center; padding: 10px 4px; background: var(--light); border-radius: 6px; border: 1px solid #e2e8f0; }
+.kpi .val { font-size: 22px; font-weight: 700; color: var(--blue); line-height: 1.1; }
+.kpi .val.red { color: var(--red); }
+.kpi .val.green { color: var(--green); }
+.kpi .val.amber { color: var(--amber); }
+.kpi .lbl { font-size: 8px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.section { margin-bottom: 14px; }
+.section h2 { font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #cbd5e1; }
+
+table { width: 100%; border-collapse: collapse; font-size: 10px; }
+th { text-align: left; font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 6px; border-bottom: 1px solid #cbd5e1; }
+td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:nth-child(even) { background: #f8fafc; }
+.highlight-row { background: #eff6ff !important; font-weight: 600; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 600; }
+.badge-red { background: #fef2f2; color: var(--red); }
+.badge-green { background: #f0fdf4; color: var(--green); }
+.badge-amber { background: #fffbeb; color: var(--amber); }
+
+.insight-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+.insight-box p { font-size: 11px; color: #1e3a5f; margin-bottom: 4px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--blue); }
+
+.footer { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 12px; font-size: 9px; color: var(--gray); display: flex; justify-content: space-between; }
+
+.print-btn { position: fixed; top: 16px; right: 16px; background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.print-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="no-print" style="background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:10px 24px;display:flex;align-items:center;gap:20px;font-size:13px;">
+  <a href="index.html" style="color:#0284c7;font-weight:600;text-decoration:none;">← Research Hub</a>
+  <a href="public_sector_report.html" style="color:#0284c7;text-decoration:none;">Full Public Sector Report</a>
+  <span style="flex:1;"></span>
+  <a href="https://monitorworkspace.com/scorecard" target="_blank" style="background:#1e40af;color:white;padding:6px 14px;border-radius:5px;font-weight:600;text-decoration:none;">Get Your Free Scorecard →</a>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+<div class="header">
+  <div>
+    <h1>U.S. Public Sector Email Security Intelligence</h1>
+    <div style="font-size:11px;color:var(--gray);margin-top:2px;">Government, Education &amp; Special Districts — DNS &amp; Email Authentication Analysis</div>
+  </div>
+  <div class="meta">
+    <strong>MonitorWorkspace</strong><br>
+    March 2026<br>
+    51 Jurisdictions &bull; 69,892 Entities
+  </div>
+</div>
+
+<div class="hero-line">
+  Only 47.2% of U.S. government domains have DMARC configured — more than half remain vulnerable to email spoofing and phishing attacks
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="val">69,892</div><div class="lbl">Public Entities</div></div>
+  <div class="kpi"><div class="val">35,862</div><div class="lbl">Domains Analyzed</div></div>
+  <div class="kpi"><div class="val green">75.9%</div><div class="lbl">SPF Adoption</div></div>
+  <div class="kpi"><div class="val amber">47.2%</div><div class="lbl">DMARC Adoption</div></div>
+  <div class="kpi"><div class="val red">28.7pp</div><div class="lbl">SPF–DMARC Gap</div></div>
+  <div class="kpi"><div class="val">14.2%</div><div class="lbl">Proxy/Gateway Rate</div></div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Entity Type — Domain Coverage</h2>
+    <table>
+      <thead><tr><th>Entity Type</th><th class="num">Total</th><th class="num">Has Domain</th><th class="num">Coverage</th></tr></thead>
+      <tbody>
+        <tr><td>Higher Education</td><td class="num">3,246</td><td class="num">3,189</td><td class="num"><span class="badge badge-green">98.2%</span></td></tr>
+        <tr><td>County</td><td class="num">3,146</td><td class="num">2,849</td><td class="num"><span class="badge badge-green">90.6%</span></td></tr>
+        <tr><td>K-12 Districts</td><td class="num">18,476</td><td class="num">15,949</td><td class="num"><span class="badge badge-green">86.3%</span></td></tr>
+        <tr><td>Municipality</td><td class="num">20,810</td><td class="num">14,023</td><td class="num"><span class="badge badge-amber">67.4%</span></td></tr>
+        <tr><td>Special District</td><td class="num">7,459</td><td class="num">4,810</td><td class="num"><span class="badge badge-amber">64.5%</span></td></tr>
+        <tr><td>State Agency</td><td class="num">1,464</td><td class="num">335</td><td class="num"><span class="badge badge-red">22.9%</span></td></tr>
+        <tr class="highlight-row"><td>Township</td><td class="num">15,290</td><td class="num">3,081</td><td class="num"><span class="badge badge-red">20.2%</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--amber);font-weight:600;">
+      35,548 public entities still lack an identifiable web domain
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Email Gateway Adoption by Entity Type</h2>
+    <table>
+      <thead><tr><th>Entity Type</th><th class="num">With MX</th><th class="num">Gateway</th><th class="num">Rate</th></tr></thead>
+      <tbody>
+        <tr><td>County</td><td class="num">2,108</td><td class="num">545</td><td class="num"><span class="badge badge-green">25.9%</span></td></tr>
+        <tr><td>Higher Education</td><td class="num">2,767</td><td class="num">564</td><td class="num"><span class="badge badge-green">20.4%</span></td></tr>
+        <tr><td>State Agency</td><td class="num">122</td><td class="num">24</td><td class="num"><span class="badge badge-amber">19.7%</span></td></tr>
+        <tr><td>Municipality</td><td class="num">8,338</td><td class="num">1,546</td><td class="num"><span class="badge badge-amber">18.5%</span></td></tr>
+        <tr><td>Township</td><td class="num">1,646</td><td class="num">303</td><td class="num"><span class="badge badge-amber">18.4%</span></td></tr>
+        <tr><td>Special District</td><td class="num">2,627</td><td class="num">345</td><td class="num"><span class="badge badge-amber">13.1%</span></td></tr>
+        <tr class="highlight-row"><td>K-12</td><td class="num">12,607</td><td class="num">1,033</td><td class="num"><span class="badge badge-red">8.2%</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--green);font-weight:600;">
+      Proxy/gateway use correlates strongly with higher DMARC adoption (+22.7pp)
+    </div>
+  </div>
+</div>
+
+<div class="insight-box">
+  <p><strong>The proxy uplift effect:</strong> Public entities using a dedicated email security gateway (Barracuda, Proofpoint, Mimecast) achieve <strong>75.7% DMARC adoption</strong> vs only <strong>53.0%</strong> for non-proxied entities — a +22.7pp difference. Infrastructure choice is the single strongest predictor of email security posture.</p>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Proxy Uplift Analysis</h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">Proxied (4,111)</th><th class="num">Non-Proxied (24,954)</th><th class="num">Uplift</th></tr></thead>
+      <tbody>
+        <tr><td>SPF Adoption</td><td class="num"><strong>97.3%</strong></td><td class="num">89.2%</td><td class="num"><span class="badge badge-green">+8.1pp</span></td></tr>
+        <tr class="highlight-row"><td>DMARC Adoption</td><td class="num"><strong>75.7%</strong></td><td class="num">53.0%</td><td class="num"><span class="badge badge-green">+22.7pp</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Top Email Providers (Public Sector)</h2>
+    <table>
+      <thead><tr><th>Provider</th><th class="num">Entities</th><th class="num">Share</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>Google Workspace</td><td class="num">9,988</td><td class="num">34.6%</td></tr>
+        <tr><td>Microsoft 365</td><td class="num">9,202</td><td class="num">31.9%</td></tr>
+        <tr><td>Other / Self-hosted</td><td class="num">3,607</td><td class="num">12.5%</td></tr>
+        <tr><td>Barracuda</td><td class="num">1,368</td><td class="num">4.7%</td></tr>
+        <tr><td>Proofpoint</td><td class="num">1,091</td><td class="num">3.8%</td></tr>
+        <tr><td>Mimecast</td><td class="num">456</td><td class="num">1.6%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Research Collaboration</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--blue);">
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px;">Custom Entity Scorecard</div>
+      <div style="font-size:10px;color:var(--gray);">MonitorWorkspace can generate personalized email security scores for any public entity — benchmarked against peers in the same entity type and jurisdiction.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--amber);">
+      <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:3px;">Dataset License</div>
+      <div style="font-size:10px;color:var(--gray);">Full access to the 69,892-entity public-sector dataset with annual refresh — ideal for academic research, policy analysis, or grant-funded cybersecurity work.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--green);">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">Policy &amp; Compliance Briefings</div>
+      <div style="font-size:10px;color:var(--gray);">Custom state or entity-type reports for legislative briefings, compliance audits, or CISA alignment initiatives. Turn data into actionable policy recommendations.</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:10px;color:#1e3a5f;">
+  <strong>Proposed next step:</strong> Request a free domain scorecard for your organization — see how you rank against 69,892 public entities.<br>
+  Contact: <a href="https://monitorworkspace.com/scorecard" style="color:var(--blue);">monitorworkspace.com/scorecard</a>
+</div>
+
+<div class="footer">
+  <div>MonitorWorkspace &bull; A Lokentra product &bull; <a href="https://monitorworkspace.com" style="color:var(--gray);">monitorworkspace.com</a> &bull; 69,892 entities analyzed &bull; March 2026</div>
+  <div>Full interactive report: moniwork.github.io/community</div>
+</div>
+
+</body>
+</html>

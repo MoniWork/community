@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cross-Sector DNS Comparison — One-Pager</title>
+<style>
+@page { size: letter; margin: 0.5in; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none; } }
+:root { --blue: #1e40af; --sky: #0284c7; --red: #dc2626; --green: #16a34a; --amber: #d97706; --gray: #475569; --light: #f8fafc; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: #1e293b; line-height: 1.5; max-width: 8.5in; margin: 0 auto; padding: 0.5in; background: white; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--blue); padding-bottom: 12px; margin-bottom: 16px; }
+.header h1 { font-size: 20px; color: var(--blue); line-height: 1.2; }
+.header .meta { text-align: right; font-size: 10px; color: var(--gray); }
+.header .meta strong { color: var(--blue); font-size: 11px; }
+
+.hero-line { font-size: 15px; font-weight: 600; color: var(--red); margin-bottom: 12px; padding: 8px 12px; background: #fef2f2; border-left: 4px solid var(--red); border-radius: 0 4px 4px 0; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
+.kpi { text-align: center; padding: 10px 4px; background: var(--light); border-radius: 6px; border: 1px solid #e2e8f0; }
+.kpi .val { font-size: 22px; font-weight: 700; color: var(--blue); line-height: 1.1; }
+.kpi .val.red { color: var(--red); }
+.kpi .val.green { color: var(--green); }
+.kpi .val.amber { color: var(--amber); }
+.kpi .lbl { font-size: 8px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.section { margin-bottom: 14px; }
+.section h2 { font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #cbd5e1; }
+
+table { width: 100%; border-collapse: collapse; font-size: 10px; }
+th { text-align: left; font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 6px; border-bottom: 1px solid #cbd5e1; }
+td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:nth-child(even) { background: #f8fafc; }
+.highlight-row { background: #eff6ff !important; font-weight: 600; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 600; }
+.badge-red { background: #fef2f2; color: var(--red); }
+.badge-green { background: #f0fdf4; color: var(--green); }
+.badge-amber { background: #fffbeb; color: var(--amber); }
+
+.bar-wrap { display: flex; align-items: center; gap: 4px; }
+.bar-bg { flex: 1; background: #e2e8f0; border-radius: 3px; height: 8px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; }
+
+.insight-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+.insight-box p { font-size: 11px; color: #1e3a5f; margin-bottom: 4px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--blue); }
+
+.footer { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 12px; font-size: 9px; color: var(--gray); display: flex; justify-content: space-between; }
+
+.print-btn { position: fixed; top: 16px; right: 16px; background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.print-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="no-print" style="background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:10px 24px;display:flex;align-items:center;gap:20px;font-size:13px;">
+  <a href="index.html" style="color:#0284c7;font-weight:600;text-decoration:none;">← Research Hub</a>
+  <a href="cross_sector_report.html" style="color:#0284c7;text-decoration:none;">Full Cross-Sector Report</a>
+  <span style="flex:1;"></span>
+  <a href="https://monitorworkspace.com/scorecard" target="_blank" style="background:#1e40af;color:white;padding:6px 14px;border-radius:5px;font-weight:600;text-decoration:none;">Get Your Free Scorecard →</a>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+<div class="header">
+  <div>
+    <h1>Cross-Sector DNS &amp; Email Security Comparison</h1>
+    <div style="font-size:11px;color:var(--gray);margin-top:2px;">SAM-native 6-segment analysis across 406,680 domains — Large Enterprise to Small Business</div>
+  </div>
+  <div class="meta">
+    <strong>MonitorWorkspace</strong><br>
+    March 2026<br>
+    406,680 Domains &bull; 3 Data Sources
+  </div>
+</div>
+
+<div class="hero-line">
+  Large enterprises lead at 75.3% DMARC — nearly 30 percentage points ahead of government (52.2%) and small business (44.9%)
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="val">406,680</div><div class="lbl">Total Domains</div></div>
+  <div class="kpi"><div class="val green">75.3%</div><div class="lbl">Large Enterprise DMARC</div></div>
+  <div class="kpi"><div class="val amber">52.2%</div><div class="lbl">Government DMARC</div></div>
+  <div class="kpi"><div class="val red">44.9%</div><div class="lbl">Small Business DMARC</div></div>
+  <div class="kpi"><div class="val">30.4pp</div><div class="lbl">Enterprise vs Gov Gap</div></div>
+  <div class="kpi"><div class="val">51.0%</div><div class="lbl">Overall DMARC Avg</div></div>
+</div>
+
+<div class="section">
+  <h2>Email Security by Sector — Ordered by DMARC Adoption</h2>
+  <table>
+    <thead><tr><th>Sector</th><th class="num">Domains</th><th class="num">MX %</th><th class="num">SPF %</th><th class="num">DMARC %</th><th class="num">Proxy %</th><th style="width:120px;">DMARC Rate</th></tr></thead>
+    <tbody>
+      <tr class="highlight-row"><td>Large Enterprise</td><td class="num">26,334</td><td class="num">95.0%</td><td class="num">93.4%</td><td class="num"><span class="badge badge-green">75.3%</span></td><td class="num">29.7%</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:75.3%;background:#16a34a;"></div></div><span style="font-size:9px;color:#64748b;">75%</span></div></td></tr>
+      <tr><td>Education</td><td class="num">4,199</td><td class="num">91.5%</td><td class="num">83.2%</td><td class="num"><span class="badge badge-green">60.7%</span></td><td class="num">11.1%</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:60.7%;background:#16a34a;"></div></div><span style="font-size:9px;color:#64748b;">61%</span></div></td></tr>
+      <tr><td>Nonprofit</td><td class="num">84,272</td><td class="num">91.3%</td><td class="num">80.1%</td><td class="num"><span class="badge badge-amber">54.9%</span></td><td class="num">11.4%</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:54.9%;background:#d97706;"></div></div><span style="font-size:9px;color:#64748b;">55%</span></div></td></tr>
+      <tr><td>Government</td><td class="num">32,710</td><td class="num">86.9%</td><td class="num">81.2%</td><td class="num"><span class="badge badge-amber">52.2%</span></td><td class="num">17.1%</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:52.2%;background:#d97706;"></div></div><span style="font-size:9px;color:#64748b;">52%</span></div></td></tr>
+      <tr><td>Other Business</td><td class="num">29,576</td><td class="num">90.8%</td><td class="num">80.6%</td><td class="num"><span class="badge badge-red">47.1%</span></td><td class="num">13.6%</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:47.1%;background:#dc2626;"></div></div><span style="font-size:9px;color:#64748b;">47%</span></div></td></tr>
+      <tr><td>Small Business</td><td class="num">244,137</td><td class="num">90.9%</td><td class="num">82.2%</td><td class="num"><span class="badge badge-red">44.9%</span></td><td class="num">12.5%</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:44.9%;background:#dc2626;"></div></div><span style="font-size:9px;color:#64748b;">45%</span></div></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="insight-box">
+  <p><strong>Infrastructure drives adoption:</strong> Large enterprises use email security proxies at 29.7% — more than 2× the rate of government (17.1%) or small business (12.5%). This proxy advantage explains much of the 30pp DMARC gap. The pattern is consistent across all sectors: gateway adoption = better authentication posture.</p>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Data Sources &amp; Coverage</h2>
+    <table>
+      <thead><tr><th>Source</th><th class="num">Domains</th><th>Coverage</th></tr></thead>
+      <tbody>
+        <tr><td>SAM.gov Entity Registration</td><td class="num">375,124</td><td>Federal contractors, grantees, registrants</td></tr>
+        <tr><td>Public Entity Database</td><td class="num">35,855</td><td>State/local government, education, special districts</td></tr>
+        <tr><td>Small Business Dataset</td><td class="num">10,935</td><td>Supplemental small-business domains</td></tr>
+        <tr class="highlight-row"><td>Total Unique</td><td class="num">406,680</td><td>After deduplication (13,210 overlaps removed)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Cross-Sector Proxy Uplift</h2>
+    <table>
+      <thead><tr><th>Segment</th><th class="num">Proxied SPF</th><th class="num">Non-Proxied SPF</th></tr></thead>
+      <tbody>
+        <tr><td>Small Business</td><td class="num">99.4%</td><td class="num">85.1%</td></tr>
+        <tr><td>Public Entities</td><td class="num">97.3%</td><td class="num">89.2%</td></tr>
+      </tbody>
+    </table>
+    <table style="margin-top:6px;">
+      <thead><tr><th>Segment</th><th class="num">Proxied DMARC</th><th class="num">Non-Proxied DMARC</th></tr></thead>
+      <tbody>
+        <tr><td>Small Business</td><td class="num">61.1%</td><td class="num">54.6%</td></tr>
+        <tr class="highlight-row"><td>Public Entities</td><td class="num"><strong>75.7%</strong></td><td class="num">53.0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Research Collaboration</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--blue);">
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px;">Cross-Sector Research</div>
+      <div style="font-size:10px;color:var(--gray);">The 406,680-domain dataset enables comparative analysis across enterprise, nonprofit, government, and SMB — rare in publicly available cybersecurity research.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--amber);">
+      <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:3px;">SAM.gov Integration</div>
+      <div style="font-size:10px;color:var(--gray);">SAM-native classification allows NAICS-level sector analysis, enabling grant-aligned research for NSF, DHS, or SBA-funded cybersecurity studies.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--green);">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">Annual Refresh Included</div>
+      <div style="font-size:10px;color:var(--gray);">Licensed dataset includes annual DNS re-scan for longitudinal research — track adoption trends across sectors over time without re-collecting data.</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:10px;color:#1e3a5f;">
+  <strong>Proposed next step:</strong> Benchmark your organization against 406,680 peers across six sectors.<br>
+  Contact: <a href="https://monitorworkspace.com/scorecard" style="color:var(--blue);">monitorworkspace.com/scorecard</a>
+</div>
+
+<div class="footer">
+  <div>MonitorWorkspace &bull; A Lokentra product &bull; <a href="https://monitorworkspace.com" style="color:var(--gray);">monitorworkspace.com</a> &bull; 406,680 domains &bull; SAM-native segmentation &bull; March 2026</div>
+  <div>Full interactive report: moniwork.github.io/community</div>
+</div>
+
+</body>
+</html>

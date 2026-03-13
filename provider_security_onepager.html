@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Provider &amp; Gateway Intelligence — One-Pager</title>
+<style>
+@page { size: letter; margin: 0.5in; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none; } }
+:root { --blue: #1e40af; --sky: #0284c7; --red: #dc2626; --green: #16a34a; --amber: #d97706; --gray: #475569; --light: #f8fafc; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: #1e293b; line-height: 1.5; max-width: 8.5in; margin: 0 auto; padding: 0.5in; background: white; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--blue); padding-bottom: 12px; margin-bottom: 16px; }
+.header h1 { font-size: 20px; color: var(--blue); line-height: 1.2; }
+.header .meta { text-align: right; font-size: 10px; color: var(--gray); }
+.header .meta strong { color: var(--blue); font-size: 11px; }
+
+.hero-line { font-size: 15px; font-weight: 600; color: var(--red); margin-bottom: 12px; padding: 8px 12px; background: #fef2f2; border-left: 4px solid var(--red); border-radius: 0 4px 4px 0; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
+.kpi { text-align: center; padding: 10px 4px; background: var(--light); border-radius: 6px; border: 1px solid #e2e8f0; }
+.kpi .val { font-size: 22px; font-weight: 700; color: var(--blue); line-height: 1.1; }
+.kpi .val.red { color: var(--red); }
+.kpi .val.green { color: var(--green); }
+.kpi .val.amber { color: var(--amber); }
+.kpi .lbl { font-size: 8px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.section { margin-bottom: 14px; }
+.section h2 { font-size: 13px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #cbd5e1; }
+
+table { width: 100%; border-collapse: collapse; font-size: 10px; }
+th { text-align: left; font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 6px; border-bottom: 1px solid #cbd5e1; }
+td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:nth-child(even) { background: #f8fafc; }
+.highlight-row { background: #eff6ff !important; font-weight: 600; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 600; }
+.badge-red { background: #fef2f2; color: var(--red); }
+.badge-green { background: #f0fdf4; color: var(--green); }
+.badge-amber { background: #fffbeb; color: var(--amber); }
+
+.insight-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+.insight-box p { font-size: 11px; color: #1e3a5f; margin-bottom: 4px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--blue); }
+
+.footer { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 12px; font-size: 9px; color: var(--gray); display: flex; justify-content: space-between; }
+
+.print-btn { position: fixed; top: 16px; right: 16px; background: var(--blue); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.print-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="no-print" style="background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:10px 24px;display:flex;align-items:center;gap:20px;font-size:13px;">
+  <a href="index.html" style="color:#0284c7;font-weight:600;text-decoration:none;">← Research Hub</a>
+  <a href="provider_security_report.html" style="color:#0284c7;text-decoration:none;">Full Provider Security Report</a>
+  <span style="flex:1;"></span>
+  <a href="https://monitorworkspace.com/scorecard" target="_blank" style="background:#1e40af;color:white;padding:6px 14px;border-radius:5px;font-weight:600;text-decoration:none;">Get Your Free Scorecard →</a>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+<div class="header">
+  <div>
+    <h1>Email Provider &amp; Gateway Intelligence</h1>
+    <div style="font-size:11px;color:var(--gray);margin-top:2px;">Infrastructure choice predicts security posture — +22.7pp DMARC uplift from email security gateways</div>
+  </div>
+  <div class="meta">
+    <strong>MonitorWorkspace</strong><br>
+    March 2026<br>
+    35,862 Domains &bull; 20 Providers Analyzed
+  </div>
+</div>
+
+<div class="hero-line">
+  Domains using an email security gateway (Barracuda, Proofpoint, Mimecast) achieve 75.7% DMARC vs only 53.0% for non-proxied domains — a +22.7pp uplift
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="val">35,862</div><div class="lbl">Domains Analyzed</div></div>
+  <div class="kpi"><div class="val green">75.7%</div><div class="lbl">Proxied DMARC</div></div>
+  <div class="kpi"><div class="val amber">53.0%</div><div class="lbl">Non-Proxied DMARC</div></div>
+  <div class="kpi"><div class="val green">+22.7pp</div><div class="lbl">Gateway Uplift</div></div>
+  <div class="kpi"><div class="val red">25.9%</div><div class="lbl">Self-Hosted DMARC</div></div>
+  <div class="kpi"><div class="val">14.2%</div><div class="lbl">Proxy Adoption Rate</div></div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Provider Category — Security Posture</h2>
+    <table>
+      <thead><tr><th>Category</th><th class="num">Domains</th><th class="num">SPF</th><th class="num">DMARC</th><th class="num">SPF–DMARC Gap</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>Email Security Proxy</td><td class="num">4,111</td><td class="num">97.3%</td><td class="num"><span class="badge badge-green">75.7%</span></td><td class="num">21.6pp</td></tr>
+        <tr><td>Enterprise Cloud Email</td><td class="num">19,190</td><td class="num">93.2%</td><td class="num"><span class="badge badge-green">60.4%</span></td><td class="num">32.8pp</td></tr>
+        <tr><td>Gov/Ed Self-hosted</td><td class="num">563</td><td class="num">90.2%</td><td class="num"><span class="badge badge-amber">55.1%</span></td><td class="num">35.1pp</td></tr>
+        <tr><td>Mid-tier Cloud Email</td><td class="num">72</td><td class="num">100.0%</td><td class="num"><span class="badge badge-amber">50.0%</span></td><td class="num">50.0pp</td></tr>
+        <tr><td>Other / Self-hosted</td><td class="num">3,607</td><td class="num">84.0%</td><td class="num"><span class="badge badge-red">25.9%</span></td><td class="num">58.1pp</td></tr>
+        <tr><td>Budget / Hosting Email</td><td class="num">1,522</td><td class="num">51.3%</td><td class="num"><span class="badge badge-red">23.8%</span></td><td class="num">27.5pp</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Top Email Gateways — DMARC Rates</h2>
+    <table>
+      <thead><tr><th>Gateway Service</th><th class="num">Domains</th><th class="num">SPF</th><th class="num">DMARC</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>Cisco IronPort</td><td class="num">211</td><td class="num">100.0%</td><td class="num"><span class="badge badge-green">89.6%</span></td></tr>
+        <tr><td>Mimecast</td><td class="num">456</td><td class="num">98.7%</td><td class="num"><span class="badge badge-green">84.2%</span></td></tr>
+        <tr><td>Barracuda</td><td class="num">1,368</td><td class="num">98.0%</td><td class="num"><span class="badge badge-green">79.3%</span></td></tr>
+        <tr><td>Sophos</td><td class="num">133</td><td class="num">98.5%</td><td class="num"><span class="badge badge-green">78.2%</span></td></tr>
+        <tr><td>Proofpoint</td><td class="num">1,091</td><td class="num">99.0%</td><td class="num"><span class="badge badge-green">73.1%</span></td></tr>
+        <tr><td>SpamTitan/TitanHQ</td><td class="num">87</td><td class="num">100.0%</td><td class="num"><span class="badge badge-green">73.6%</span></td></tr>
+        <tr><td>AppRiver/Zix</td><td class="num">454</td><td class="num">88.3%</td><td class="num"><span class="badge badge-green">66.5%</span></td></tr>
+        <tr><td>Cloudflare Email</td><td class="num">74</td><td class="num">100.0%</td><td class="num"><span class="badge badge-green">60.8%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="insight-box">
+  <p><strong>The self-hosted gap problem:</strong> Entities running their own email infrastructure (Other/Self-hosted category) have only 25.9% DMARC adoption — the lowest of any provider category, with the widest SPF-DMARC gap (58.1pp). This represents 3,607 public entities that have SPF records but have not taken the final policy enforcement step. Budget hosting providers like GoDaddy (3.3% DMARC) add another 717 at-risk entities.</p>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Enterprise vs Proxy: Microsoft &amp; Google</h2>
+    <table>
+      <thead><tr><th>Provider</th><th class="num">Domains</th><th class="num">SPF</th><th class="num">DMARC</th><th class="num">Gap</th></tr></thead>
+      <tbody>
+        <tr><td>Microsoft 365</td><td class="num">9,202</td><td class="num">99.1%</td><td class="num"><span class="badge badge-amber">62.0%</span></td><td class="num">37.1pp</td></tr>
+        <tr><td>Google Workspace</td><td class="num">9,988</td><td class="num">87.7%</td><td class="num"><span class="badge badge-amber">58.9%</span></td><td class="num">28.8pp</td></tr>
+        <tr><td>GoDaddy</td><td class="num">717</td><td class="num">7.3%</td><td class="num"><span class="badge badge-red">3.3%</span></td><td class="num">4.0pp</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--amber);font-weight:600;">Microsoft SPF 99.1% but DMARC only 62.0% — 37pp gap needs attention</div>
+  </div>
+
+  <div class="section">
+    <h2>Proxy Uplift Summary</h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">Proxied (4,111)</th><th class="num">Non-Proxied (24,954)</th><th class="num">Uplift</th></tr></thead>
+      <tbody>
+        <tr><td>MX Records</td><td class="num">100.0%</td><td class="num">100.0%</td><td class="num">—</td></tr>
+        <tr><td>SPF Adoption</td><td class="num">97.3%</td><td class="num">89.2%</td><td class="num"><span class="badge badge-green">+8.1pp</span></td></tr>
+        <tr class="highlight-row"><td>DMARC Adoption</td><td class="num"><strong>75.7%</strong></td><td class="num">53.0%</td><td class="num"><span class="badge badge-green">+22.7pp</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--green);font-weight:600;">Gateway deployment is the highest-ROI security investment for email authentication</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Research Collaboration</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--blue);">
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px;">Vendor Landscape Research</div>
+      <div style="font-size:10px;color:var(--gray);">Provider-level security data across 20+ vendors enables market analysis, competitive benchmarking, and vendor selection research for public sector procurement.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--amber);">
+      <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:3px;">Security ROI Analysis</div>
+      <div style="font-size:10px;color:var(--gray);">The +22.7pp proxy uplift quantifies the measurable security benefit of gateway investments — ideal for budget justification studies and compliance reporting.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--green);">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">Procurement Intelligence</div>
+      <div style="font-size:10px;color:var(--gray);">Identify which providers are most common in your state or entity type — supports strategic vendor analysis for state-wide email security initiatives.</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:10px;color:#1e3a5f;">
+  <strong>Proposed next step:</strong> Get a free scorecard showing your provider's security posture vs 35,862 public sector peers.<br>
+  Contact: <a href="https://monitorworkspace.com/scorecard" style="color:var(--blue);">monitorworkspace.com/scorecard</a>
+</div>
+
+<div class="footer">
+  <div>MonitorWorkspace &bull; A Lokentra product &bull; <a href="https://monitorworkspace.com" style="color:var(--gray);">monitorworkspace.com</a> &bull; Provider &amp; Gateway Intelligence &bull; March 2026</div>
+  <div>Full interactive report: moniwork.github.io/community</div>
+</div>
+
+</body>
+</html>

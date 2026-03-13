@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Texas Public Sector Email Security — DIR Briefing</title>
+<style>
+@page { size: letter; margin: 0.5in; }
+@media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } .no-print { display: none; } }
+:root { --blue: #1e40af; --sky: #0284c7; --red: #dc2626; --green: #16a34a; --amber: #d97706; --gray: #475569; --light: #f8fafc; --tx: #bf5700; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; color: #1e293b; line-height: 1.5; max-width: 8.5in; margin: 0 auto; padding: 0.5in; background: white; }
+
+.header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 3px solid var(--tx); padding-bottom: 12px; margin-bottom: 16px; }
+.header h1 { font-size: 20px; color: var(--tx); line-height: 1.2; }
+.header .meta { text-align: right; font-size: 10px; color: var(--gray); }
+.header .meta strong { color: var(--tx); font-size: 11px; }
+
+.hero-line { font-size: 15px; font-weight: 600; color: var(--green); margin-bottom: 12px; padding: 8px 12px; background: #f0fdf4; border-left: 4px solid var(--green); border-radius: 0 4px 4px 0; }
+
+.kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 16px; }
+.kpi { text-align: center; padding: 10px 4px; background: var(--light); border-radius: 6px; border: 1px solid #e2e8f0; }
+.kpi .val { font-size: 22px; font-weight: 700; color: var(--tx); line-height: 1.1; }
+.kpi .val.red { color: var(--red); }
+.kpi .val.green { color: var(--green); }
+.kpi .val.amber { color: var(--amber); }
+.kpi .lbl { font-size: 8px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; margin-top: 2px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.section { margin-bottom: 14px; }
+.section h2 { font-size: 13px; font-weight: 700; color: var(--tx); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; padding-bottom: 3px; border-bottom: 1px solid #fcd9c0; }
+
+table { width: 100%; border-collapse: collapse; font-size: 10px; }
+th { text-align: left; font-size: 9px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.3px; padding: 4px 6px; border-bottom: 1px solid #cbd5e1; }
+td { padding: 3px 6px; border-bottom: 1px solid #f1f5f9; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:nth-child(even) { background: #f8fafc; }
+.highlight-row { background: #fff7ed !important; font-weight: 600; }
+.badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: 600; }
+.badge-red { background: #fef2f2; color: var(--red); }
+.badge-green { background: #f0fdf4; color: var(--green); }
+.badge-amber { background: #fffbeb; color: var(--amber); }
+.badge-tx { background: #fff7ed; color: var(--tx); }
+
+.insight-box { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+.insight-box p { font-size: 11px; color: #7c2d12; margin-bottom: 4px; }
+.insight-box p:last-child { margin-bottom: 0; }
+.insight-box strong { color: var(--tx); }
+
+.action-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; }
+.action-box h3 { font-size: 11px; font-weight: 700; color: var(--blue); margin-bottom: 6px; }
+.action-box ol { padding-left: 16px; }
+.action-box li { font-size: 10px; color: #1e3a5f; margin-bottom: 3px; }
+
+.footer { border-top: 1px solid #cbd5e1; padding-top: 8px; margin-top: 12px; font-size: 9px; color: var(--gray); display: flex; justify-content: space-between; }
+
+.print-btn { position: fixed; top: 16px; right: 16px; background: var(--tx); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+.print-btn:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="no-print" style="background:#f1f5f9;border-bottom:1px solid #e2e8f0;padding:10px 24px;display:flex;align-items:center;gap:20px;font-size:13px;">
+  <a href="index.html" style="color:#0284c7;font-weight:600;text-decoration:none;">← Research Hub</a>
+  <a href="education_report.html" style="color:#0284c7;text-decoration:none;">Education Report</a>
+  <a href="public_sector_report.html" style="color:#0284c7;text-decoration:none;">Public Sector Report</a>
+  <span style="flex:1;"></span>
+  <a href="https://monitorworkspace.com/scorecard" target="_blank" style="background:#bf5700;color:white;padding:6px 14px;border-radius:5px;font-weight:600;text-decoration:none;">Get Your Free Scorecard →</a>
+</div>
+
+<button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+<div class="header">
+  <div>
+    <h1>Texas Public Sector Email Security Intelligence</h1>
+    <div style="font-size:11px;color:var(--gray);margin-top:2px;">DIR Security Briefing &bull; DNS &amp; Email Authentication Analysis Across 6,365 TX Public Entities</div>
+  </div>
+  <div class="meta">
+    <strong>MonitorWorkspace</strong><br>
+    March 2026<br>
+    Texas &bull; 51-State Benchmarked
+  </div>
+</div>
+
+<div class="hero-line">
+  Texas ranks 21st nationally with 46.9% overall DMARC adoption — but TX K-12 leads the nation at 67.2%, a full +20.5pp above the national K-12 average
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="val">6,365</div><div class="lbl">TX Public Entities</div></div>
+  <div class="kpi"><div class="val">4,644</div><div class="lbl">Domains Identified</div></div>
+  <div class="kpi"><div class="val amber">78.3%</div><div class="lbl">TX SPF Adoption</div></div>
+  <div class="kpi"><div class="val amber">46.9%</div><div class="lbl">TX DMARC Adoption</div></div>
+  <div class="kpi"><div class="val">#21</div><div class="lbl">National Ranking</div></div>
+  <div class="kpi"><div class="val green">67.2%</div><div class="lbl">TX K-12 DMARC (#3)</div></div>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>Texas by Entity Type</h2>
+    <table>
+      <thead><tr><th>Entity Type</th><th class="num">Count</th><th class="num">Domains</th><th class="num">TX DMARC</th><th class="num">National Avg</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>K-12 Districts</td><td class="num">1,245</td><td class="num">1,229</td><td class="num"><span class="badge badge-green">67.2%</span></td><td class="num">46.7%</td></tr>
+        <tr><td>Higher Education</td><td class="num">189</td><td class="num">147</td><td class="num"><span class="badge badge-green">91.8%</span></td><td class="num">84.4%</td></tr>
+        <tr><td>Municipalities</td><td class="num">1,180</td><td class="num">~900</td><td class="num"><span class="badge badge-amber">~40%</span></td><td class="num">~42%</td></tr>
+        <tr><td>Counties</td><td class="num">254</td><td class="num">~230</td><td class="num"><span class="badge badge-amber">~48%</span></td><td class="num">~50%</td></tr>
+        <tr><td>State Agencies</td><td class="num">462</td><td class="num">~280</td><td class="num"><span class="badge badge-amber">~45%</span></td><td class="num">~47%</td></tr>
+        <tr><td>Special Districts</td><td class="num">3,035</td><td class="num">~1,700</td><td class="num"><span class="badge badge-red">~25%</span></td><td class="num">~30%</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:4px;font-size:9px;color:var(--gray);">Municipalities/counties/agencies estimated from state-wide data; exact entity-type DMARC by state in full report.</div>
+  </div>
+
+  <div class="section">
+    <h2>TX vs National Benchmarks</h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">Texas</th><th class="num">National</th><th class="num">Delta</th></tr></thead>
+      <tbody>
+        <tr><td>Total Public Entities</td><td class="num">6,365</td><td class="num">69,892</td><td class="num" style="color:var(--gray);">#1 by count</td></tr>
+        <tr><td>Domain Coverage</td><td class="num">73.0%</td><td class="num">51.3%</td><td class="num"><span class="badge badge-green">+21.7pp</span></td></tr>
+        <tr><td>SPF Adoption</td><td class="num">78.3%</td><td class="num">75.9%</td><td class="num"><span class="badge badge-green">+2.4pp</span></td></tr>
+        <tr><td>DMARC Adoption</td><td class="num">46.9%</td><td class="num">47.2%</td><td class="num"><span class="badge badge-amber">−0.3pp</span></td></tr>
+        <tr><td>Proxy Rate</td><td class="num">12.8%</td><td class="num">14.2%</td><td class="num"><span class="badge badge-amber">−1.4pp</span></td></tr>
+        <tr class="highlight-row"><td>K-12 DMARC</td><td class="num">67.2%</td><td class="num">46.7%</td><td class="num"><span class="badge badge-green">+20.5pp</span></td></tr>
+        <tr><td>Higher Ed DMARC</td><td class="num">91.8%</td><td class="num">84.4%</td><td class="num"><span class="badge badge-green">+7.4pp</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="insight-box">
+  <p><strong>The Texas story:</strong> Texas has the largest public-sector entity count of any state (6,365) with exceptional domain coverage (73% vs 51% national avg). K-12 performance is a standout — 67.2% DMARC ranks in the top 3 nationally. The challenge is Texas's 3,035 special districts: water districts, MUDs, hospital districts, and ESDs make up nearly half of all TX entities and likely have the lowest authentication rates, dragging the overall state average down to #21.</p>
+</div>
+
+<div class="two-col">
+  <div class="section">
+    <h2>TX K-12 — National Standout</h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">TX K-12</th><th class="num">National K-12</th></tr></thead>
+      <tbody>
+        <tr><td>Entities</td><td class="num">1,245</td><td class="num">18,476</td></tr>
+        <tr><td>Domains</td><td class="num">1,229</td><td class="num">15,949</td></tr>
+        <tr><td>Domain Coverage</td><td class="num"><strong>99.7%</strong></td><td class="num">86.3%</td></tr>
+        <tr><td>SPF Adoption</td><td class="num"><strong>87.8%</strong></td><td class="num">~77%</td></tr>
+        <tr class="highlight-row"><td>DMARC Adoption</td><td class="num"><strong>67.2%</strong></td><td class="num">46.7%</td></tr>
+        <tr><td>SPF–DMARC Gap</td><td class="num">20.6pp</td><td class="num">~30pp</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--green);font-weight:600;">TX K-12 DMARC is +20.5pp above the national average — ranked #3 among all states</div>
+  </div>
+
+  <div class="section">
+    <h2>TX Higher Education — Strong Performance</h2>
+    <table>
+      <thead><tr><th>Metric</th><th class="num">TX Higher Ed</th><th class="num">National Higher Ed</th></tr></thead>
+      <tbody>
+        <tr><td>Institutions</td><td class="num">189</td><td class="num">3,246</td></tr>
+        <tr><td>Domains Analyzed</td><td class="num">147</td><td class="num">3,189</td></tr>
+        <tr><td>SPF Adoption</td><td class="num"><strong>96.6%</strong></td><td class="num">~88%</td></tr>
+        <tr class="highlight-row"><td>DMARC Adoption</td><td class="num"><strong>91.8%</strong></td><td class="num">84.4%</td></tr>
+        <tr><td>SPF–DMARC Gap</td><td class="num">4.8pp</td><td class="num">~12pp</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:6px;font-size:10px;color:var(--green);font-weight:600;">TX higher ed SPF–DMARC gap (4.8pp) is far tighter than the national average — indicating strong policy enforcement</div>
+  </div>
+</div>
+
+<div class="action-box">
+  <h3>Recommended DIR Action Items — Based on Data Findings</h3>
+  <ol>
+    <li><strong>Special districts are the highest-risk segment</strong>: 3,035 TX special districts (water, MUD, hospital, ESD) likely have DMARC below 30%. A targeted DIR outreach campaign could significantly move the state's overall ranking.</li>
+    <li><strong>SPF-to-DMARC conversion opportunity</strong>: Texas has 78.3% SPF but only 46.9% DMARC — roughly 31pp of entities have SPF deployed but haven't enforced DMARC policy. A DIR directive or guidance document could accelerate this final step.</li>
+    <li><strong>Gateway adoption lags national average</strong>: TX proxy rate (12.8%) is below the 14.2% national avg. DIR can recommend qualified email security gateways to state entities through the Texas DIR Cooperative Contracts program.</li>
+    <li><strong>Leverage K-12 success</strong>: TX K-12 performance (#3 nationally) suggests that TEA guidance and district IT consolidation programs work. Replicate this model for municipal and special district sectors via COG outreach.</li>
+  </ol>
+</div>
+
+<div class="section">
+  <h2>How MonitorWorkspace Can Support DIR</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--tx);">
+      <div style="font-size:11px;font-weight:700;color:var(--tx);margin-bottom:3px;">Entity-Level Scorecards</div>
+      <div style="font-size:10px;color:var(--gray);">Generate individual email security scorecards for all 6,365 TX public entities — ready for DIR outreach campaigns or annual compliance reporting.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--blue);">
+      <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px;">Annual Benchmarking</div>
+      <div style="font-size:10px;color:var(--gray);">Track Texas entity adoption trends year-over-year — measure the impact of DIR security mandates, tech purchase programs, or outreach campaigns.</div>
+    </div>
+    <div style="background:var(--light);padding:10px;border-radius:6px;border-left:3px solid var(--green);">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px;">Special District Focus</div>
+      <div style="font-size:10px;color:var(--gray);">Custom deep-dive for Texas's 3,035 special districts — the highest-risk, lowest-coverage segment. Identify which districts need immediate intervention.</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:6px;padding:10px 14px;margin-bottom:10px;font-size:10px;color:#7c2d12;">
+  <strong>Proposed next step:</strong> 30-minute briefing with the DIR security team to walk through TX entity-level data and explore dataset licensing or scorecard integration.<br>
+  Contact: <a href="https://monitorworkspace.com/scorecard" style="color:var(--tx);">monitorworkspace.com/scorecard</a>
+</div>
+
+<div class="footer">
+  <div>MonitorWorkspace &bull; A Lokentra product &bull; <a href="https://monitorworkspace.com" style="color:var(--gray);">monitorworkspace.com</a> &bull; 6,365 Texas public entities analyzed &bull; March 2026</div>
+  <div>Full interactive reports: moniwork.github.io/community</div>
+</div>
+
+</body>
+</html>
