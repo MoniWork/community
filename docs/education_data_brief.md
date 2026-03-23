@@ -60,6 +60,25 @@ Each domain is profiled across the complete email authentication stack:
 
 ---
 
+## The Human Impact: Who Is at Risk
+
+Based on 100,081 operational schools across 19,281 CCD-matched K-12 districts, combined with NCES national averages (381 students/school, 51 staff/school, 2 parents/student):
+
+| Population | Total in Dataset | At Risk (No DMARC, 48.3%) | Critically Exposed (Grade F, 15.1%) |
+|------------|----------------:|-------------------------:|------------------------------------:|
+| Students | 38.1 million | **18.4 million** | 5.8 million |
+| Parents/guardians | 76.3 million | **36.8 million** | 11.5 million |
+| Staff and educators | 5.1 million | **2.5 million** | 770,000 |
+| **Total people** | **119.5 million** | **57.7 million** | **18.0 million** |
+
+**Nearly 58 million people** -- students, parents, and educators -- are associated with K-12 districts that lack DMARC email authentication. Their districts can be impersonated by anyone sending a spoofed email. An additional **18 million** are in Grade F districts with minimal or no email authentication at all.
+
+These are not abstract domain counts. These are children, families, and teachers whose school communications can be forged without detection.
+
+*Estimates use NCES 2023-2024 national averages applied to operational school counts from CCD 2024-2025. Individual district enrollment data can be linked via NCES LEAID for precise counts.*
+
+---
+
 ## Key Findings Education Researchers Can Build On
 
 ### Finding 1: K-12 is Google's stronghold -- a 4:1 ratio over Microsoft
