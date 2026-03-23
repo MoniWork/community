@@ -20,18 +20,21 @@
 | States covered | 50 + District of Columbia |
 | DNS record types per domain | 7 (A, CNAME, MX, NS, SPF, DMARC, SOA) |
 | Data collection period | March 2026 |
-| Entity schema fields | 28 per entity |
+| Entity schema fields | 40 per entity |
 
 ### Education Segment (This Brief)
 
 | Metric | Value |
 |--------|-------|
-| K-12 school districts | 15,949 |
-| Higher education institutions | 3,189 |
-| **Total education entities** | **19,138** |
-| Unique education domains DNS-profiled | ~16,500 |
-| K-12 domains with email security grade | ~13,600 |
-| Higher ed domains with email security grade | ~2,970 |
+| K-12 school districts and charter LEAs | 22,741 |
+| Higher education institutions | 3,246 |
+| **Total education entities** | **25,987** |
+| K-12 with website / domain | 18,274 |
+| K-12 with phone number | 19,281 (100% of CCD-matched) |
+| K-12 with physical address | 19,281 (100% of CCD-matched) |
+| K-12 with grade span | 19,281 (100% of CCD-matched) |
+| K-12 with NCES LEAID (join key) | 19,281 |
+| K-12 data freshness | **2024-2025 school year** |
 
 ---
 
@@ -147,6 +150,14 @@ Districts using budget hosting providers (GoDaddy email: 7.3% SPF) are effective
 | `source_name` | string | Authoritative collection source |
 | `source_url` | string | Exact URL of source data |
 | `collected_at` | ISO 8601 | Collection timestamp |
+| `nces_leaid` | string | NCES LEA ID (canonical join key to NCES finance/enrollment) |
+| `phone` | string | District main phone number |
+| `physical_address` | string | Physical street address |
+| `mailing_address` | string | Mailing address |
+| `grade_low` / `grade_high` | string | Grade span (e.g., PK to 12) |
+| `operational_schools` | integer | Number of operational schools in district |
+| `lea_type` | string | LEA type code (regular, charter, regional, etc.) |
+| `charter_flag` | string | Charter status (NOTCHR, CHRTIDEAESEA, etc.) |
 
 ---
 
@@ -305,8 +316,8 @@ All deliveries include:
 | Tier | Scope | Suggested Use |
 |------|-------|---------------|
 | **State Pack** | Single state, all education entities | Regional studies, state policy analysis |
-| **K-12 National** | All 15,949 K-12 districts, 50 states | National K-12 cybersecurity research |
-| **Higher Ed National** | All 3,189 institutions, 50 states | Higher ed technology adoption studies |
+| **K-12 National** | All 22,741 K-12 districts + charters, 50 states | National K-12 cybersecurity research |
+| **Higher Ed National** | All 3,246 institutions, 50 states | Higher ed technology adoption studies |
 | **Full Education** | K-12 + Higher Ed combined | Cross-segment comparative research |
 | **Full Public Sector** | All 69,892 entities (all types) | Comprehensive government technology research |
 | **API + Updates** | Quarterly re-scan, API access | Longitudinal studies, dashboards |

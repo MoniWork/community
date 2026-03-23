@@ -89,7 +89,7 @@ footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-siz
   <p class="subtitle">Data product brief for education researchers &mdash; the largest entity-attributed email security dataset covering K-12 districts and higher education institutions across all 50 states.</p>
   <div class="hero-stats">
     <div class="hero-stat"><div class="big">406,680</div><div class="label">Total Domains Profiled</div></div>
-    <div class="hero-stat"><div class="big">19,138</div><div class="label">Education Entities</div></div>
+    <div class="hero-stat"><div class="big">25,987</div><div class="label">Education Entities</div></div>
     <div class="hero-stat"><div class="big red">48.3%</div><div class="label">K-12 Without DMARC</div></div>
     <div class="hero-stat"><div class="big green">86.1%</div><div class="label">Higher Ed DMARC</div></div>
   </div>
@@ -109,18 +109,19 @@ footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-siz
       <tr><td>Nonprofits (IRS BMF)</td><td class="num">84,272</td></tr>
       <tr><td>States covered</td><td class="num">50 + DC</td></tr>
       <tr><td>DNS record types per domain</td><td class="num">7</td></tr>
-      <tr><td>Entity schema fields</td><td class="num">28</td></tr>
+      <tr><td>Entity schema fields</td><td class="num">40</td></tr>
     </table>
   </div>
   <div class="section">
     <h2>Education Segment <span class="badge">This Brief</span></h2>
     <table>
-      <tr><td>K-12 school districts</td><td class="num"><strong>15,949</strong></td></tr>
-      <tr><td>Higher education institutions</td><td class="num"><strong>3,189</strong></td></tr>
-      <tr><td>Total education entities</td><td class="num"><strong>19,138</strong></td></tr>
-      <tr><td>Education domains DNS-profiled</td><td class="num">~16,500</td></tr>
-      <tr><td>K-12 domains with security grade</td><td class="num">~13,600</td></tr>
-      <tr><td>Higher ed domains with grade</td><td class="num">~2,970</td></tr>
+      <tr><td>K-12 districts + charter LEAs</td><td class="num"><strong>22,741</strong></td></tr>
+      <tr><td>Higher education institutions</td><td class="num"><strong>3,246</strong></td></tr>
+      <tr><td>Total education entities</td><td class="num"><strong>25,987</strong></td></tr>
+      <tr><td>K-12 with website / domain</td><td class="num">18,274</td></tr>
+      <tr><td>K-12 with phone + address</td><td class="num">19,281 (100%)</td></tr>
+      <tr><td>K-12 with NCES LEAID (join key)</td><td class="num">19,281</td></tr>
+      <tr><td>K-12 data freshness</td><td class="num"><strong>2024-2025</strong></td></tr>
     </table>
   </div>
 </div>
@@ -218,6 +219,15 @@ footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-siz
       <tr><td><code>dns_score</code></td><td>integer</td><td>0&ndash;100 composite security score</td></tr>
       <tr><td><code>grade</code></td><td>string</td><td>A / B / C / D / F</td></tr>
       <tr><td><code>source_name</code> / <code>source_url</code></td><td>string</td><td>Authoritative collection source with URL</td></tr>
+      <tr style="border-top:2px solid var(--border);"><td colspan="3" style="font-size:12px;color:var(--accent);font-weight:600;padding-top:12px;">NEW &mdash; CCD 2024-2025 Fields</td></tr>
+      <tr><td><code>nces_leaid</code></td><td>string</td><td>NCES LEA ID &mdash; canonical join key to NCES finance, enrollment, demographics</td></tr>
+      <tr><td><code>phone</code></td><td>string</td><td>District main phone number</td></tr>
+      <tr><td><code>physical_address</code></td><td>string</td><td>Physical street address</td></tr>
+      <tr><td><code>mailing_address</code></td><td>string</td><td>Mailing address</td></tr>
+      <tr><td><code>grade_low</code> / <code>grade_high</code></td><td>string</td><td>Grade span (e.g., PK to 12)</td></tr>
+      <tr><td><code>operational_schools</code></td><td>integer</td><td>Number of operational schools in district</td></tr>
+      <tr><td><code>lea_type</code></td><td>string</td><td>LEA type (regular, charter agency, regional, specialized, etc.)</td></tr>
+      <tr><td><code>charter_flag</code></td><td>string</td><td>Charter status (NOTCHR, CHRTIDEAESEA, etc.)</td></tr>
     </tbody>
   </table>
 </div>
@@ -346,8 +356,8 @@ footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-siz
       <thead><tr><th>Tier</th><th>Scope</th></tr></thead>
       <tbody>
         <tr><td><strong>State Pack</strong></td><td>Single state, all education entities</td></tr>
-        <tr><td><strong>K-12 National</strong></td><td>All 15,949 K-12 districts, 50 states</td></tr>
-        <tr><td><strong>Higher Ed National</strong></td><td>All 3,189 institutions, 50 states</td></tr>
+        <tr><td><strong>K-12 National</strong></td><td>All 22,741 K-12 districts + charters, 50 states</td></tr>
+        <tr><td><strong>Higher Ed National</strong></td><td>All 3,246 institutions, 50 states</td></tr>
         <tr><td><strong>Full Education</strong></td><td>K-12 + Higher Ed combined</td></tr>
         <tr><td><strong>Full Public Sector</strong></td><td>All 69,892 entities (all types)</td></tr>
         <tr><td><strong>API + Updates</strong></td><td>Quarterly re-scan, API access</td></tr>
