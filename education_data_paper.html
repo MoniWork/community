@@ -154,16 +154,7 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 <p>The CCD 2024-2025 file (<code>ccd_lea_029_2425_w_1a_073025.csv</code>) provides 19,630 LEA records, of which 19,281 have <code>SY_STATUS=1</code> (Open). These were ingested via a deterministic pipeline that matches existing entities by NCES LEAID and inserts unmatched entities as new records. The CCD file provides phone numbers, physical and mailing addresses, grade span, operational school count, charter status, and LEA type classification for 100% of open LEAs.</p>
 
 <h3>3.2 DNS Profiling Pipeline</h3>
-<p>Domain extraction isolates the apex domain from each entity's website URL. DNS resolution proceeds in seven stages:</p>
-<ol>
-  <li><strong>MX resolution</strong> &mdash; 50-thread parallel resolution via <code>dnspython</code></li>
-  <li><strong>Provider classification</strong> &mdash; MX hostname pattern matching (Google Workspace, Microsoft 365, Barracuda, Proofpoint, etc.)</li>
-  <li><strong>SPF/DMARC/DKIM resolution</strong> &mdash; TXT record parsing with qualifier extraction</li>
-  <li><strong>Gateway detection</strong> &mdash; MX vs. SPF divergence analysis to identify email security proxies</li>
-  <li><strong>Underlying provider inference</strong> &mdash; SPF <code>include:</code> analysis to detect the real mailbox platform behind gateways</li>
-  <li><strong>Scoring</strong> &mdash; 100-point rubric applied to each domain</li>
-  <li><strong>Deduplication</strong> &mdash; SHA-1 keyed on <code>normalized_name | entity_type | county</code></li>
-</ol>
+<p>Each entity's website URL is resolved to its apex domain, then profiled across seven DNS record types (A, CNAME, MX, NS, SPF, DMARC, SOA) using parallel resolution. The pipeline classifies email providers from MX records, detects third-party email security gateways by comparing MX and SPF records, infers the underlying mailbox platform behind proxies, and scores each domain on a 100-point authentication rubric. Entities are deduplicated via SHA-1 hash of normalized name, type, and county.</p>
 
 <h3>3.3 Scoring Rubric</h3>
 
@@ -217,12 +208,32 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </div>
 <p>DMARC receives the highest weight (40%) because it is the only protocol that directly prevents domain spoofing in the <code>From:</code> header &mdash; the field end users see and trust.</p>
 
-<!-- 4. Findings -->
-<h2>4. Findings</h2>
+<!-- 4. Human Impact -->
+<h2>4. The Human Impact: Populations at Risk</h2>
 
-<h3>4.1 Email Provider Bifurcation</h3>
+<p>Email security gaps are not abstract technical metrics. To estimate the human exposure, we combined operational school counts from the CCD 2024-2025 file (100,081 schools across 19,281 matched K-12 districts) with NCES national averages: 381 students per school, 51 staff and educators per school, and 2 parents or guardians per student.</p>
+
 <table>
-  <caption>Table 5. Email Provider Distribution by Education Segment</caption>
+  <caption>Table 5. Estimated Population Exposure from K-12 Email Security Gaps</caption>
+  <thead><tr><th>Population</th><th class="num">Total in Dataset</th><th class="num">At Risk (No DMARC, 48.3%)</th><th class="num">Critically Exposed (Grade F, 15.1%)</th></tr></thead>
+  <tbody>
+    <tr><td>Students</td><td class="num">38.1 million</td><td class="num"><strong class="red">18.4 million</strong></td><td class="num">5.8 million</td></tr>
+    <tr><td>Parents and guardians</td><td class="num">76.3 million</td><td class="num"><strong class="red">36.8 million</strong></td><td class="num">11.5 million</td></tr>
+    <tr><td>Staff and educators</td><td class="num">5.1 million</td><td class="num"><strong class="red">2.5 million</strong></td><td class="num">770,000</td></tr>
+    <tr class="highlight"><td><strong>Total people</strong></td><td class="num"><strong>119.5 million</strong></td><td class="num"><strong class="red">57.7 million</strong></td><td class="num"><strong>18.0 million</strong></td></tr>
+  </tbody>
+</table>
+
+<p><strong class="red">Nearly 58 million people</strong> &mdash; students, parents, and educators &mdash; are associated with K-12 districts that lack DMARC email authentication. Their districts can be impersonated by anyone sending a spoofed email. An additional <strong>18 million</strong> are in Grade F districts with minimal or no email authentication at all. These are children, families, and teachers whose school communications can be forged without detection.</p>
+
+<p class="fig-caption">Estimates use NCES 2023-2024 national averages applied to operational school counts from CCD 2024-2025. Individual district enrollment data can be linked via NCES LEAID for precise counts.</p>
+
+<!-- 5. Findings -->
+<h2>5. Findings</h2>
+
+<h3>5.1 Email Provider Bifurcation</h3>
+<table>
+  <caption>Table 6. Email Provider Distribution by Education Segment</caption>
   <thead><tr><th>Segment</th><th class="num">Google Workspace</th><th class="num">Microsoft 365</th><th class="num">Ratio</th></tr></thead>
   <tbody>
     <tr class="highlight"><td>K-12 school districts</td><td class="num">8,611</td><td class="num">2,159</td><td class="num"><strong>4.0 : 1</strong></td></tr>
@@ -231,9 +242,9 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </table>
 <p>K-12 districts overwhelmingly use Google Workspace, consistent with Google Workspace for Education's free or heavily discounted licensing for K-12. Higher education institutions invert this pattern, favoring Microsoft 365 at a 2.9:1 ratio. <strong class="accent">This is the first empirical quantification of this bifurcation at national scale.</strong></p>
 
-<h3>4.2 Email Authentication Adoption</h3>
+<h3>5.2 Email Authentication Adoption</h3>
 <table>
-  <caption>Table 6. Authentication Protocol Adoption Rates</caption>
+  <caption>Table 7. Authentication Protocol Adoption Rates</caption>
   <thead><tr><th>Protocol</th><th class="num">K-12</th><th class="num">Higher Ed</th><th class="num">National Avg</th><th class="num">K-12 vs Higher Ed</th></tr></thead>
   <tbody>
     <tr><td>MX records (any)</td><td class="num">85.7%</td><td class="num">93.3%</td><td class="num">81.0%</td><td class="num">-7.6pp</td></tr>
@@ -244,9 +255,9 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </table>
 <p><strong class="red">48.3% of K-12 domains have no DMARC record.</strong> These districts are fully vulnerable to domain spoofing &mdash; an attacker can send email appearing to come from <code>superintendent@district.org</code> and it will be delivered to recipients' inboxes without authentication failure. Higher education achieves 86.1% DMARC adoption, a 34.4 percentage-point lead likely attributable to larger IT teams, dedicated security staff, and higher cybersecurity awareness.</p>
 
-<h3>4.3 Email Security Gateway Adoption</h3>
+<h3>5.3 Email Security Gateway Adoption</h3>
 <table>
-  <caption>Table 7. Email Security Gateway Adoption</caption>
+  <caption>Table 8. Email Security Gateway Adoption</caption>
   <thead><tr><th>Entity Type</th><th class="num">Domains with MX</th><th class="num">Using Gateway</th><th class="num">Adoption Rate</th></tr></thead>
   <tbody>
     <tr><td>Higher education</td><td class="num">2,767</td><td class="num">564</td><td class="num"><strong class="green">20.4%</strong></td></tr>
@@ -255,7 +266,7 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </table>
 <p>Only 8.2% of K-12 districts route mail through a third-party email security gateway (Barracuda, Proofpoint, Mimecast, etc.), the lowest rate of any public-sector entity type. Domains using gateways exhibit substantially stronger authentication posture:</p>
 <table>
-  <caption>Table 8. Gateway Effect on Authentication</caption>
+  <caption>Table 9. Gateway Effect on Authentication</caption>
   <thead><tr><th>Cohort</th><th class="num">SPF</th><th class="num">DMARC</th></tr></thead>
   <tbody>
     <tr><td>Gateway-proxied domains</td><td class="num">97.3%</td><td class="num">75.7%</td></tr>
@@ -264,9 +275,9 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
   </tbody>
 </table>
 
-<h3>4.4 Provider-Security Correlation</h3>
+<h3>5.4 Provider-Security Correlation</h3>
 <table>
-  <caption>Table 9. Authentication Adoption by Provider Category</caption>
+  <caption>Table 10. Authentication Adoption by Provider Category</caption>
   <thead><tr><th>Provider Category</th><th class="num">Domains</th><th class="num">SPF</th><th class="num">DMARC</th><th class="num">Gap</th></tr></thead>
   <tbody>
     <tr><td>Email Security Proxy</td><td class="num">4,111</td><td class="num">97.3%</td><td class="num">75.7%</td><td class="num">21.6pp</td></tr>
@@ -279,9 +290,9 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 <p>Email infrastructure choice is strongly predictive of security posture. Districts using budget hosting providers exhibit SPF rates as low as 7.3% (GoDaddy), rendering them effectively unprotected. The vendor ecosystem a district selects determines its security floor.</p>
 
 <!-- 5. Dataset Schema -->
-<h2>5. Dataset Schema</h2>
+<h2>6. Dataset Schema</h2>
 <table>
-  <caption>Table 10. Entity Schema (Education-Relevant Fields, 40 columns total)</caption>
+  <caption>Table 11. Entity Schema (Education-Relevant Fields, 40 columns total)</caption>
   <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
   <tbody>
     <tr><td><code>entity_name</code></td><td>string</td><td>Official district or institution name</td></tr>
@@ -311,9 +322,9 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </table>
 
 <!-- 6. Research Applications -->
-<h2>6. Research Applications</h2>
+<h2>7. Research Applications</h2>
 
-<h3>6.1 Education Policy</h3>
+<h3>7.1 Education Policy</h3>
 <ul>
   <li><strong>Cybersecurity readiness assessment</strong> &mdash; identify the most vulnerable states and districts</li>
   <li><strong>Federal mandate gap analysis</strong> &mdash; model the impact of extending BOD 18-01 to K-12</li>
@@ -321,14 +332,14 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
   <li><strong>State policy effectiveness</strong> &mdash; compare states with and without cybersecurity mandates</li>
 </ul>
 
-<h3>6.2 EdTech and Procurement</h3>
+<h3>7.2 EdTech and Procurement</h3>
 <ul>
   <li><strong>Cloud adoption patterns</strong> &mdash; quantify Google vs. Microsoft market share by segment and state</li>
   <li><strong>Vendor lock-in</strong> &mdash; analyze switching barriers created by free Google Workspace for Education</li>
   <li><strong>Email security gateway TAM</strong> &mdash; 8,200+ K-12 districts without gateways represent an addressable market</li>
 </ul>
 
-<h3>6.3 Cybersecurity Research</h3>
+<h3>7.3 Cybersecurity Research</h3>
 <ul>
   <li><strong>Phishing risk modeling</strong> &mdash; map authentication gaps to phishing exposure at the district level</li>
   <li><strong>DMARC deployment barriers</strong> &mdash; investigate why 48% of K-12 lacks DMARC despite having SPF</li>
@@ -336,10 +347,10 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </ul>
 
 <!-- 7. Cross-Sector Context -->
-<h2>7. Cross-Sector Benchmarking</h2>
+<h2>8. Cross-Sector Benchmarking</h2>
 <p>The ESI scoring rubric is applied uniformly across the full entity registry, enabling cross-sector comparisons:</p>
 <table>
-  <caption>Table 11. Available Sector Datasets</caption>
+  <caption>Table 12. Available Sector Datasets</caption>
   <thead><tr><th>Sector</th><th>Source</th><th class="num">Entities</th></tr></thead>
   <tbody>
     <tr><td>Education (K-12 + Higher Ed)</td><td>NCES CCD 2024-2025, IPEDS, state agencies</td><td class="num">25,987</td></tr>
@@ -351,7 +362,7 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </table>
 
 <!-- 8. Limitations -->
-<h2>8. Limitations</h2>
+<h2>9. Limitations</h2>
 <ul>
   <li><strong>Website coverage.</strong> 3,467 K-12 entities (15.2%) lack a website URL, precluding DNS analysis. These tend to be small charter LEAs or specialized agencies.</li>
   <li><strong>County field sparsity.</strong> The CCD LEA file does not include county; county attribution for newly inserted entities requires secondary enrichment via NCES LEAID.</li>
@@ -361,9 +372,9 @@ code { font-family: 'Courier New', Courier, monospace; font-size: 12px; backgrou
 </ul>
 
 <!-- 9. Availability -->
-<h2>9. Data Availability</h2>
+<h2>10. Data Availability</h2>
 <table>
-  <caption>Table 12. Licensing Tiers</caption>
+  <caption>Table 13. Licensing Tiers</caption>
   <thead><tr><th>Tier</th><th>Scope</th><th>Suggested Use</th></tr></thead>
   <tbody>
     <tr><td><strong>State Pack</strong></td><td>Single state, all education entities</td><td>Regional studies, state policy</td></tr>
