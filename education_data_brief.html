@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Education Email Security Dataset — Lokentra ESI</title>
+<meta name="description" content="406,680 domains DNS-profiled. The largest entity-attributed email security dataset covering U.S. K-12 districts, higher education, businesses, and nonprofits.">
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155; --border: #475569;
+  --text: #e2e8f0; --text-muted: #94a3b8; --accent: #38bdf8;
+  --green: #4ade80; --yellow: #fbbf24; --red: #f87171;
+  --purple: #a78bfa; --pink: #f472b6; --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+
+.site-nav { position: sticky; top: 0; z-index: 100; background: rgba(15,23,42,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 24px; }
+.site-nav .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 0; overflow-x: auto; }
+.site-nav a { display: block; padding: 14px 18px; color: var(--text-muted); font-size: 13px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.hero { padding: 80px 24px 60px; text-align: center; background: linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(167,139,250,0.06) 50%, rgba(244,114,182,0.04) 100%); border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+.hero h1 { font-size: 34px; font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
+.hero .subtitle { color: var(--text-muted); font-size: 16px; max-width: 740px; margin: 0 auto 28px; }
+.hero-stats { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+.hero-stat { text-align: center; }
+.hero-stat .big { font-size: 42px; font-weight: 700; color: var(--accent); line-height: 1.1; }
+.hero-stat .big.red { color: var(--red); }
+.hero-stat .big.green { color: var(--green); }
+.hero-stat .big.yellow { color: var(--yellow); }
+.hero-stat .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+.section { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); padding: 24px; margin-bottom: 24px; }
+.section h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section h2 .badge { font-size: 11px; background: var(--surface2); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); font-weight: 400; }
+.section h3 { font-size: 15px; font-weight: 600; margin: 20px 0 10px; color: var(--accent); }
+.section p, .section li { font-size: 14px; color: var(--text); margin-bottom: 8px; }
+.section ul { padding-left: 20px; }
+.section li { margin-bottom: 6px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr:hover { background: var(--surface2); }
+.highlight-row { background: rgba(56,189,248,0.08) !important; }
+
+.callout { border-left: 4px solid var(--accent); background: rgba(56,189,248,0.06); padding: 16px 20px; margin-bottom: 20px; border-radius: 0 8px 8px 0; font-size: 14px; }
+.callout-red { border-left-color: var(--red); background: rgba(248,113,113,0.06); }
+.callout strong { color: var(--accent); }
+.callout-red strong { color: var(--red); }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.tag-green { background: rgba(74,222,128,0.15); color: var(--green); }
+.tag-yellow { background: rgba(251,191,36,0.15); color: var(--yellow); }
+.tag-red { background: rgba(248,113,113,0.15); color: var(--red); }
+.tag-accent { background: rgba(56,189,248,0.15); color: var(--accent); }
+
+.cta-box { text-align: center; border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin-top: 32px; background: var(--surface); }
+.cta-box p { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+.cta-box .btn { display: inline-block; padding: 12px 28px; background: var(--accent); color: var(--bg); border-radius: 8px; font-weight: 600; font-size: 15px; }
+.cta-box .btn:hover { opacity: 0.9; text-decoration: none; }
+
+.rubric-grade { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.rubric-grade .letter { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; }
+.rubric-grade .desc { font-size: 13px; color: var(--text-muted); }
+.rubric-grade .desc strong { color: var(--text); }
+
+code { background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 12px; color: var(--accent); }
+
+footer { text-align: center; padding: 32px 0; color: var(--text-muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav"><div class="nav-inner"><a href="https://www.monitorworkspace.com" target="_blank" style="font-weight:700;color:var(--accent);">MonitorWorkspace</a><a href="index.html">Hub</a><a href="public_sector_report.html">Public Sector</a><a href="cross_sector_report.html">Cross-Sector</a><a href="state_rankings_report.html">State Rankings</a><a href="provider_security_report.html">Provider Security</a><a href="education_report.html">Education &amp; K-12</a><a href="education_data_brief.html" class="active">Data Brief</a><a href="education_onepager.html">K-12 One-Pager</a></div></nav>
+
+<!-- Hero -->
+<div class="hero">
+  <h1>U.S. Education Email Security Intelligence Dataset</h1>
+  <p class="subtitle">Data product brief for education researchers &mdash; the largest entity-attributed email security dataset covering K-12 districts and higher education institutions across all 50 states.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="big">406,680</div><div class="label">Total Domains Profiled</div></div>
+    <div class="hero-stat"><div class="big">19,138</div><div class="label">Education Entities</div></div>
+    <div class="hero-stat"><div class="big red">48.3%</div><div class="label">K-12 Without DMARC</div></div>
+    <div class="hero-stat"><div class="big green">86.1%</div><div class="label">Higher Ed DMARC</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- Dataset at a Glance -->
+<div class="grid-2">
+  <div class="section">
+    <h2>Full Lokentra ESI Registry</h2>
+    <table>
+      <tr><td>Total domains DNS-profiled</td><td class="num"><strong>406,680</strong></td></tr>
+      <tr><td>Domains alive (resolving)</td><td class="num">391,984 (96.4%)</td></tr>
+      <tr><td>Public sector entities</td><td class="num">69,892</td></tr>
+      <tr><td>For-profit businesses (SAM.gov)</td><td class="num">273,713</td></tr>
+      <tr><td>Nonprofits (IRS BMF)</td><td class="num">84,272</td></tr>
+      <tr><td>States covered</td><td class="num">50 + DC</td></tr>
+      <tr><td>DNS record types per domain</td><td class="num">7</td></tr>
+      <tr><td>Entity schema fields</td><td class="num">28</td></tr>
+    </table>
+  </div>
+  <div class="section">
+    <h2>Education Segment <span class="badge">This Brief</span></h2>
+    <table>
+      <tr><td>K-12 school districts</td><td class="num"><strong>15,949</strong></td></tr>
+      <tr><td>Higher education institutions</td><td class="num"><strong>3,189</strong></td></tr>
+      <tr><td>Total education entities</td><td class="num"><strong>19,138</strong></td></tr>
+      <tr><td>Education domains DNS-profiled</td><td class="num">~16,500</td></tr>
+      <tr><td>K-12 domains with security grade</td><td class="num">~13,600</td></tr>
+      <tr><td>Higher ed domains with grade</td><td class="num">~2,970</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- What Makes This Unique -->
+<div class="section">
+  <h2>What Makes This Dataset Unique</h2>
+  <div class="grid-2">
+    <div>
+      <h3>1. No comparable dataset exists</h3>
+      <p>The U.S. Census Bureau's Census of Governments counts entities but provides no internet domains or email provider data. NCES CCD/IPEDS cover enrollment and finance but no technology infrastructure. <strong style="color:var(--accent);">This is the only dataset linking every U.S. K-12 district and accredited institution to its full DNS profile, email provider, security gateway status, and authentication posture.</strong></p>
+    </div>
+    <div>
+      <h3>2. Entity-attributed, not domain-sampled</h3>
+      <p>Unlike threat intelligence feeds that start from domain lists, this dataset starts from authoritative government rosters and works forward to DNS. Every record is attributed to a named entity with type, subtype, state, county, and source provenance. Researchers can join to NCES, Census, or SAIPE datasets by district name, state, and county.</p>
+    </div>
+  </div>
+  <h3>3. Full DNS security stack, not just DMARC</h3>
+  <p>Each domain is profiled across the complete email authentication stack: <span class="tag tag-accent">SPF</span> record presence and qualifier &bull; <span class="tag tag-accent">DKIM</span> public key across common selectors &bull; <span class="tag tag-accent">DMARC</span> policy level &bull; <span class="tag tag-accent">MX</span> provider classification &bull; <span class="tag tag-accent">Gateway</span> proxy detection &bull; <span class="tag tag-accent">Underlying provider</span> inference via SPF analysis</p>
+</div>
+
+<!-- Key Findings -->
+<div class="section">
+  <h2>Key Findings <span class="badge">5 headline results</span></h2>
+
+  <h3>Finding 1: K-12 is Google&rsquo;s stronghold &mdash; a 4:1 ratio over Microsoft</h3>
+  <table>
+    <thead><tr><th>Segment</th><th class="num">Google Workspace</th><th class="num">Microsoft 365</th><th class="num">Ratio</th></tr></thead>
+    <tbody>
+      <tr class="highlight-row"><td>K-12 school districts</td><td class="num">8,611</td><td class="num">2,159</td><td class="num"><span class="tag tag-accent">4.0 : 1</span></td></tr>
+      <tr><td>Higher education</td><td class="num">579</td><td class="num">1,680</td><td class="num">1 : 2.9</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>First empirical quantification at national scale.</strong> K-12 overwhelmingly uses Google Workspace (free Education tier). Higher ed inverts the pattern, favoring Microsoft 365.
+    <br><em style="color:var(--text-muted);font-size:13px;">Research angles: cloud vendor lock-in, procurement drivers, EdTech ecosystem effects, digital equity.</em>
+  </div>
+
+  <h3>Finding 2: Half of K-12 districts lack DMARC &mdash; vulnerable to spoofing</h3>
+  <table>
+    <thead><tr><th>Protocol</th><th class="num">K-12</th><th class="num">Higher Ed</th><th class="num">National Avg</th></tr></thead>
+    <tbody>
+      <tr><td>MX records</td><td class="num">85.7%</td><td class="num">93.3%</td><td class="num">81.0%</td></tr>
+      <tr><td>SPF</td><td class="num">79.1%</td><td class="num">90.5%</td><td class="num">75.9%</td></tr>
+      <tr class="highlight-row"><td>DMARC (any)</td><td class="num"><span class="tag tag-red">51.7%</span></td><td class="num"><span class="tag tag-green">86.1%</span></td><td class="num">47.2%</td></tr>
+      <tr><td>DMARC reject</td><td class="num">~25%</td><td class="num">~55%</td><td class="num">~22.6%</td></tr>
+    </tbody>
+  </table>
+  <div class="callout callout-red">
+    <strong>48.3% of K-12 domains have no DMARC record.</strong> These districts can be impersonated via email spoofing &mdash; a direct phishing vector against parents, staff, and students. Higher ed leads by 34.4 percentage points.
+  </div>
+
+  <h3>Finding 3: K-12 districts rarely deploy email security gateways</h3>
+  <table>
+    <thead><tr><th>Entity Type</th><th class="num">Domains with MX</th><th class="num">Using Gateway</th><th class="num">Rate</th></tr></thead>
+    <tbody>
+      <tr><td>Higher education</td><td class="num">2,767</td><td class="num">564</td><td class="num"><span class="tag tag-green">20.4%</span></td></tr>
+      <tr class="highlight-row"><td>K-12</td><td class="num">12,607</td><td class="num">1,033</td><td class="num"><span class="tag tag-red">8.2%</span></td></tr>
+    </tbody>
+  </table>
+  <p>Districts with gateways show <span class="tag tag-green">+22.7pp DMARC uplift</span> and <span class="tag tag-green">+8.1pp SPF uplift</span> over non-proxied domains.</p>
+
+  <h3>Finding 4: State-by-state variation reveals policy effects</h3>
+  <p>The dataset covers all 50 states + DC with per-state breakdowns. States with centralized IT governance show higher adoption; states with fragmented district structures show lower adoption. Rural vs urban district size correlates with security posture.</p>
+
+  <h3>Finding 5: Provider choice predicts security</h3>
+  <table>
+    <thead><tr><th>Provider Category</th><th class="num">SPF</th><th class="num">DMARC</th><th class="num">Gap</th></tr></thead>
+    <tbody>
+      <tr><td>Email Security Proxy</td><td class="num"><span class="tag tag-green">97.3%</span></td><td class="num"><span class="tag tag-green">75.7%</span></td><td class="num">21.6pp</td></tr>
+      <tr><td>Enterprise Cloud (Google/M365)</td><td class="num">93.2%</td><td class="num">60.4%</td><td class="num">32.8pp</td></tr>
+      <tr><td>Budget Hosting (GoDaddy, IONOS)</td><td class="num"><span class="tag tag-red">51.3%</span></td><td class="num"><span class="tag tag-red">23.8%</span></td><td class="num">27.5pp</td></tr>
+    </tbody>
+  </table>
+  <p>Districts using GoDaddy email: <strong style="color:var(--red);">7.3% SPF</strong> &mdash; effectively unprotected. The vendor ecosystem determines the security floor.</p>
+</div>
+
+<!-- Schema -->
+<div class="section">
+  <h2>Dataset Schema <span class="badge">Education-Relevant Fields</span></h2>
+  <table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>entity_name</code></td><td>string</td><td>Official district or institution name</td></tr>
+      <tr><td><code>entity_type</code></td><td>enum</td><td><code>k12</code> or <code>higher_ed</code></td></tr>
+      <tr><td><code>entity_subtype</code></td><td>string</td><td>school_district, charter_org, community_college, university, etc.</td></tr>
+      <tr><td><code>state</code></td><td>string</td><td>Two-letter USPS code</td></tr>
+      <tr><td><code>county</code></td><td>string</td><td>County name</td></tr>
+      <tr><td><code>primary_domain</code></td><td>string</td><td>Apex domain (e.g., springisd.org)</td></tr>
+      <tr><td><code>mx_provider</code></td><td>string</td><td>Classified email provider</td></tr>
+      <tr><td><code>has_spf</code> / <code>has_dkim</code> / <code>has_dmarc</code></td><td>boolean</td><td>Protocol presence flags</td></tr>
+      <tr><td><code>dmarc_policy</code></td><td>string</td><td>none, quarantine, reject</td></tr>
+      <tr><td><code>email_proxy</code></td><td>string</td><td>Security gateway service (Barracuda, Proofpoint, etc.)</td></tr>
+      <tr><td><code>underlying_provider</code></td><td>string</td><td>Real mailbox platform behind gateway</td></tr>
+      <tr><td><code>dns_score</code></td><td>integer</td><td>0&ndash;100 composite security score</td></tr>
+      <tr><td><code>grade</code></td><td>string</td><td>A / B / C / D / F</td></tr>
+      <tr><td><code>source_name</code> / <code>source_url</code></td><td>string</td><td>Authoritative collection source with URL</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Scoring Rubric -->
+<div class="section">
+  <h2>ESI Scoring Rubric <span class="badge">100-point scale</span></h2>
+
+  <div class="grid-2">
+    <div>
+      <h3>SPF &mdash; 30 points</h3>
+      <table>
+        <thead><tr><th>Configuration</th><th class="num">Points</th></tr></thead>
+        <tbody>
+          <tr><td><code>-all</code> (hard fail)</td><td class="num"><span class="tag tag-green">30</span></td></tr>
+          <tr><td><code>~all</code> (soft fail)</td><td class="num"><span class="tag tag-yellow">15</span></td></tr>
+          <tr><td><code>?all</code> or <code>+all</code></td><td class="num"><span class="tag tag-yellow">5</span></td></tr>
+          <tr><td>No SPF record</td><td class="num"><span class="tag tag-red">0</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3>DKIM &mdash; 30 points</h3>
+      <table>
+        <thead><tr><th>Configuration</th><th class="num">Points</th></tr></thead>
+        <tbody>
+          <tr><td>DKIM public key published</td><td class="num"><span class="tag tag-green">30</span></td></tr>
+          <tr><td>No DKIM key found</td><td class="num"><span class="tag tag-red">0</span></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Selectors checked: <code>google</code>, <code>mail</code>, <code>selector1</code>, <code>selector2</code>, <code>s1</code>, <code>s2</code>, <code>k1</code></p>
+    </div>
+    <div>
+      <h3>DMARC &mdash; 40 points (highest weight)</h3>
+      <table>
+        <thead><tr><th>Configuration</th><th class="num">Points</th></tr></thead>
+        <tbody>
+          <tr><td><code>p=reject</code> (full enforcement)</td><td class="num"><span class="tag tag-green">40</span></td></tr>
+          <tr><td><code>p=quarantine</code></td><td class="num"><span class="tag tag-yellow">20</span></td></tr>
+          <tr><td><code>p=none</code> (monitoring only)</td><td class="num"><span class="tag tag-yellow">10</span></td></tr>
+          <tr><td>No DMARC record</td><td class="num"><span class="tag tag-red">0</span></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">DMARC receives 40% weight because it is the only protocol that prevents spoofing in the <code>From:</code> header &mdash; the field end users actually see.</p>
+
+      <h3>Composite Grade</h3>
+      <div class="rubric-grade"><div class="letter" style="background:rgba(74,222,128,0.2);color:var(--green);">A</div><div class="desc"><strong>90&ndash;100</strong> &mdash; Full enforcement (SPF hard fail + DKIM + DMARC reject)</div></div>
+      <div class="rubric-grade"><div class="letter" style="background:rgba(56,189,248,0.2);color:var(--accent);">B</div><div class="desc"><strong>70&ndash;89</strong> &mdash; Strong posture, minor gaps</div></div>
+      <div class="rubric-grade"><div class="letter" style="background:rgba(251,191,36,0.2);color:var(--yellow);">C</div><div class="desc"><strong>50&ndash;69</strong> &mdash; Partial protection (K-12 national average)</div></div>
+      <div class="rubric-grade"><div class="letter" style="background:rgba(251,191,36,0.2);color:var(--orange);">D</div><div class="desc"><strong>30&ndash;49</strong> &mdash; Weak: missing DKIM or DMARC</div></div>
+      <div class="rubric-grade"><div class="letter" style="background:rgba(248,113,113,0.2);color:var(--red);">F</div><div class="desc"><strong>0&ndash;29</strong> &mdash; Minimal or no authentication</div></div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:20px;">
+    <strong>What the grades mean for education:</strong><br>
+    <strong style="color:var(--green);">Grade A district</strong> &mdash; Parents and staff cannot receive spoofed email from this domain.<br>
+    <strong style="color:var(--yellow);">Grade C district</strong> (K-12 average) &mdash; SPF present, but no DMARC. An attacker can send email appearing to come from <code>superintendent@district.org</code> and it lands in inboxes.<br>
+    <strong style="color:var(--red);">Grade F district</strong> &mdash; No email authentication. Any sender can impersonate any address at this domain.
+  </div>
+</div>
+
+<!-- Cross-Sector -->
+<div class="section">
+  <h2>Beyond Education: Cross-Sector Benchmarking Available</h2>
+  <p>The ESI scoring rubric is applied uniformly across our full entity registry. Researchers who need broader context can access scored datasets for:</p>
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="callout">
+      <strong>For-profit businesses</strong><br>
+      <span style="font-size:13px;color:var(--text-muted);">Sourced from SAM.gov federal entity registrations &bull; 273,713 domains &bull; DNS-profiled and graded</span>
+    </div>
+    <div class="callout">
+      <strong>Nonprofits</strong><br>
+      <span style="font-size:13px;color:var(--text-muted);">Sourced from IRS Business Master File (BMF) &bull; 84,272 domains &bull; DNS-profiled and graded</span>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted);font-style:italic;">How does K-12 email security compare to the nonprofit sector? Do SAM.gov-registered contractors outperform the school districts they serve? Education-only purchasers can add sector packs later without re-licensing.</p>
+</div>
+
+<!-- Research Applications -->
+<div class="section">
+  <h2>Research Applications</h2>
+  <div class="grid-2">
+    <div>
+      <h3>Education Policy Researchers</h3>
+      <ul>
+        <li><strong>Cybersecurity readiness</strong> &mdash; Which states/districts are most vulnerable?</li>
+        <li><strong>Federal mandate gap</strong> &mdash; BOD 18-01 covers federal agencies; what would a K-12 equivalent look like?</li>
+        <li><strong>Digital equity</strong> &mdash; Do rural, underfunded districts have worse security?</li>
+        <li><strong>State policy effectiveness</strong> &mdash; Do cybersecurity mandates improve K-12 adoption?</li>
+      </ul>
+    </div>
+    <div>
+      <h3>EdTech &amp; Procurement Researchers</h3>
+      <ul>
+        <li><strong>Cloud adoption</strong> &mdash; Quantify Google vs Microsoft split across education</li>
+        <li><strong>Vendor lock-in</strong> &mdash; How does free Google Workspace for Education affect switching?</li>
+        <li><strong>Gateway market</strong> &mdash; Which vendors serve education? What's the curve?</li>
+        <li><strong>TAM</strong> &mdash; 8,200+ K-12 districts without email security gateways</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Cybersecurity Researchers</h3>
+  <ul>
+    <li><strong>Phishing risk modeling</strong> &mdash; Map authentication gaps to phishing exposure at district level</li>
+    <li><strong>DMARC barriers</strong> &mdash; Why do 48% of K-12 districts lack DMARC despite having SPF?</li>
+    <li><strong>Provider-security causality</strong> &mdash; Does Google's auto-provisioning of SPF explain the gap?</li>
+    <li><strong>Longitudinal tracking</strong> &mdash; Baseline for measuring future adoption progress</li>
+  </ul>
+</div>
+
+<!-- Delivery & Pricing -->
+<div class="grid-2">
+  <div class="section">
+    <h2>Delivery Format</h2>
+    <table>
+      <tr><td><strong>CSV / Parquet</strong></td><td>Flat files, one row per entity</td></tr>
+      <tr><td><strong>SQLite database</strong></td><td>Pre-indexed by state, type, provider, grade</td></tr>
+      <tr><td><strong>API access</strong></td><td>RESTful query with filtering &amp; aggregation</td></tr>
+      <tr><td><strong>Interactive dashboard</strong></td><td>Web-based explorer with drill-down</td></tr>
+    </table>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">All deliveries include methodology docs, source provenance, data dictionary, and reproducibility scripts.</p>
+  </div>
+  <div class="section">
+    <h2>Pricing Tiers</h2>
+    <table>
+      <thead><tr><th>Tier</th><th>Scope</th></tr></thead>
+      <tbody>
+        <tr><td><strong>State Pack</strong></td><td>Single state, all education entities</td></tr>
+        <tr><td><strong>K-12 National</strong></td><td>All 15,949 K-12 districts, 50 states</td></tr>
+        <tr><td><strong>Higher Ed National</strong></td><td>All 3,189 institutions, 50 states</td></tr>
+        <tr><td><strong>Full Education</strong></td><td>K-12 + Higher Ed combined</td></tr>
+        <tr><td><strong>Full Public Sector</strong></td><td>All 69,892 entities (all types)</td></tr>
+        <tr><td><strong>API + Updates</strong></td><td>Quarterly re-scan, API access</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Competitive Positioning -->
+<div class="section">
+  <h2>Competitive Positioning</h2>
+  <table>
+    <thead><tr><th>Capability</th><th class="num">This Dataset</th><th class="num">NCES CCD/IPEDS</th><th class="num">Threat Intel</th><th class="num">Censys/Shodan</th></tr></thead>
+    <tbody>
+      <tr><td>Entity-attributed (named districts)</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td></tr>
+      <tr><td>All 50 states + DC</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-yellow">Partial</span></td><td class="num">&mdash;</td></tr>
+      <tr><td>Email provider classification</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-yellow">Partial</span></td></tr>
+      <tr><td>DMARC/SPF/DKIM posture</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td></tr>
+      <tr><td>Email gateway detection</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-yellow">Partial</span></td><td class="num"><span class="tag tag-red">No</span></td></tr>
+      <tr><td>Underlying provider inference</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td></tr>
+      <tr><td>K-12 + Higher Ed combined</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-yellow">Separate</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td></tr>
+      <tr><td>Education-sector benchmarks</td><td class="num"><span class="tag tag-green">Yes</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td><td class="num"><span class="tag tag-red">No</span></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CTA -->
+<div class="cta-box">
+  <p>Try a free email security scorecard for any education domain</p>
+  <a class="btn" href="https://www.monitorworkspace.com/scorecard" target="_blank">Get Your Free Scorecard &rarr;</a>
+  <p style="margin-top:16px;font-size:12px;">Contact: <a href="mailto:research@monitorworkspace.com">research@monitorworkspace.com</a></p>
+</div>
+
+</div><!-- /container -->
+
+<footer>Lokentra ESI &middot; Lokentra Research Division &middot; <a href="https://www.monitorworkspace.com">monitorworkspace.com</a> &middot; 406,680 domains across 51 jurisdictions &middot; March 2026</footer>
+
+</body>
+</html>
