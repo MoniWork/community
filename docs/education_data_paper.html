@@ -62,7 +62,12 @@ tr:hover { background: #f1f5f9; }
 
 /* Two-column layout for some tables */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+@media (max-width: 700px) {
+  body { padding: 20px 16px; max-width: 100%; }
+  .title-block h1 { font-size: 18px; }
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .two-col { grid-template-columns: 1fr; }
+}
 @media print { .two-col { grid-template-columns: 1fr 1fr; } }
 
 code { font-family: 'Courier New', Courier, monospace; font-size: 12px; background: #f3f4f6; padding: 1px 4px; border-radius: 2px; }
